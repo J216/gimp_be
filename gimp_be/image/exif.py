@@ -15,7 +15,7 @@ class ExifTool(object):
             stdin=subprocess.PIPE, stdout=subprocess.PIPE)
         return self
 
-    def  __exit__(self, exc_type, exc_value, traceback):
+    def __exit__(self, exc_type, exc_value, traceback):
         self.process.stdin.write("-stay_open\nFalse\n")
         self.process.stdin.flush()
 
