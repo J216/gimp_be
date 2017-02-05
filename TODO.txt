@@ -1,4 +1,5 @@
 ##Project todo list##
+# creat function initialSettings() to deal with first run, setting; default save path, hostname, author name
 # develop method for applying text
 # create automatic setup for twitter keys and tokens
 # create devaintArt submission function (submit==>sta.sh==>publish==>DeviantArt) Use direct API call with or without wrapper?
