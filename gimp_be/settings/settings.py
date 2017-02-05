@@ -6,18 +6,19 @@ def loadSettings():
     """
     import os, json
     global settings_data
-    os.chdir(os.path.abspath(__file__)[0:os.path.abspath(__file__).rfind('\\')])
+    os.chdir(os.path.abspath(__file__)[0:os.path.abspath(__file__).replace('\\','/').rfind('/')])
     if os.path.isfile('settings.json'):
         with open('settings.json') as json_data_file:
             settings_data = json.load(json_data_file)
     else:
         settings_data = {"not_loaded": "1"}
+    return settings_data
 
 
 def saveSettings():
     global settings_data
     import os, json
-    os.chdir(os.path.abspath(__file__)[0:os.path.abspath(__file__).rfind('\\')])
+    os.chdir(os.path.abspath(__file__)[0:os.path.abspath(__file__).replace('\\','/').rfind('/')])
     try:
         with open('settings.json', 'w') as fp:
             json.dump(settings_data, fp)
@@ -71,7 +72,9 @@ def getLocationData():
     return loc_data
 
 
-def updateLocationData(save=1):
+def updateLocationData(save=1, print_conditions=1):
+    import datetime
+    now = datetime.datetime.now()
     global settings_data
     temp_loc=getLocationData()
     if not temp_loc[0] == '0':
@@ -84,6 +87,11 @@ def updateLocationData(save=1):
         if save == 1:
             saveSettings()
             loadSettings()
+        if print_conditions == 1:
+            print now.strftime("%A %B %d - %I:%M%p")
+            print settings_data["location"]["city"] + ' ' + settings_data["location"]["state"]
+            print settings_data["location"]["tempf"] + ' ' + settings_data["location"]["weather"]
+            print settings_data["user"]["author"] + ' on ' + settings_data["network"]["host_name"] + '\n'
         return True
     else:
         return False
