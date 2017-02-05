@@ -1,18 +1,15 @@
 ##Project todo list##
-#remote command send
+# develop method for applying text
+# create automatic setup for twitter keys and tokens
 # create devaintArt submission function (submit==>sta.sh==>publish==>DeviantArt) Use direct API call with or without wrapper?
 # check load image dir fuction, seems to be loading one at a time
-# might have messed up logging, possibly typing issue, str does not have .append?
 # Work with digital artists to create a system that supports their process
-# find a mentor
 # use 12 column layout
-# construct project management feature
+# construct project management features
 # create gui for project management features
-# develop method for applying text
 # develop grunge painting basic functions
 # -get some
 # implement doPainting('help') help info display
-# create automatic setup for twitter keys and tokens
 # fix drawSinWave() it is not drawing correct form
 # create furry circles
 # create Quality Control game
