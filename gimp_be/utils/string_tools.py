@@ -2,7 +2,7 @@ from gimp_be.settings.settings import *
 
 lines = ['']
 try:
-    os.chdir(os.path.abspath(__file__)[0:os.path.abspath(__file__).rfind('\\')])
+    os.chdir(os.path.abspath(__file__).replace('\\','/')[0:os.path.abspath(__file__).replace('\\','/').rfind('/')])
     text_file = open('words.txt', 'r')
     lines = list(text_file.read().split('\n'))
 
@@ -10,27 +10,20 @@ except:
     lines = ['File not loaded']
 
 
-def imageTitle(opt=0):
+def imageTitle(words=3):
     """
     assemble title string
     :param opt:
     :return:
     """
     import random,os
-    global settings_data
-    global lines
-    try:
-        os.chdir(os.path.abspath(__file__)[0:os.path.abspath(__file__).rfind('\\')])
-        text_file = open('words.txt', 'r')
-        lines = text_file.read().split('\n')
-        if opt == 2:
-            title = random.choice(lines) + ' ' + random.choice(lines)
-        else:
-            title = random.choice(lines) + ' ' + random.choice(lines) + ' ' + random.choice(lines)
-
-    except:
-        title = 'File not loaded'
-    return title
+    words_file = os.path.abspath(__file__).replace('\\','/')[0:os.path.abspath(__file__).replace('\\','/').rfind('/')]+'/words.txt'
+    text_file = open(words_file, 'r')
+    lines = text_file.read().split('\n')
+    title=''
+    for word in range(0,words):
+        title = title + random.choice(lines).strip() + ' '
+    return title.strip()
 
 
 def stringIncrement(serial_string):
