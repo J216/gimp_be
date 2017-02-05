@@ -1,44 +1,30 @@
 {
-    "twitter":{
-        "default_tweet":"Created with #GIMP and #Python by Jared Haer",
-        "CONSUMER_KEY":"2SldS3T5e2YA35LS65xVNl7FX",
-        "CONSUMER_SECRET":"P0NPYWHgup0JrhWIwuJb3VSBLN5S6kssMXsTnqvg7med7KC8Zg",
-        "ACCESS_TOKEN_KEY":"75925071-KZFx7ktJDdbCzI35zvBVfm37Enc4q88Y8xvJ9MwmG",
-        "ACCESS_TOKEN_SECRET":"qPhzsRqUmSUzhpANNYt1kHZndNGYcCJn2OpLUXpuCKhyi"
-    },
-    "path":{
-        "default_save_path":"C:/Users/Kodkod/Google Drive/art/script_drawing/",
-        "script_folder":"C:/scr/",
-        "log_folder":"C:/scr/log/",
-        "text_path":"C:/Users/Kodkod/Google Drive/art/gimp_scripts/noun-animals.txt",
-        "resource_folder":"C:/Users/Kodkod/Google Drive/art/resource/",
-        "art_folder":"C:/Users/Kodkod/Google Drive/art/",
-        "basic_functions_folder":"C:/Users/Kodkod/Google Drive/art/gimp_scripts/",
-        "python2_folder":"C:/Python27/",
-        "python3_folder":"C:/Users/Kodkod/Anaconda3/",
-        "exiftool_folder":"C:/scr/Tools/"
-    },
-        "network":{
-        "host_name":"Sony-Laptop",
-        "local_ftp":"192.168.0.30",
-        "loc_ftp_username":"gimp-user",
-        "loc_ftp_password":"gimp328a"
-    },
-    "user":{
-        "author":"Jared Haer"
-    },
-    "image":{
-        "title":"Digital Study",
-        "height":"2560",
-        "width":"1920",
-        "x_center":"960",
-        "y_center":"1280"
-    },
-    "location":{
-        "city":"Saint Joseph",
-        "state":"Missouri",
-        "country":"USA",
-        "weather":"Fair",
-        "tempf":"96.8"
-    }
+  "twitter": {
+    "default_tweet": "Created with #GIMP and #Python",
+    "CONSUMER_KEY": "YOUR KEY HERE",
+    "CONSUMER_SECRET": "YOUR SECRET HERE",
+    "ACCESS_TOKEN_KEY": "YOUR TOKEN KEY HERE",
+    "ACCESS_TOKEN_SECRET": "YOUR TOKEN SECRET HERE",
+    "hashtags": "#Your #hashtags"
+  },
+  "path": {
+    "default_save_path": "YOUR DEFAULT SAVE PATH",
+    "resource_folder": "YOUR RESOURCE FOLDER"
+  },
+  "network": {
+    "host_name": "YOUR COMPUTER NAME"
+  },
+  "user": {
+    "author": "YOUR NAME HERE"
+  },
+  "image": {
+    "title": "YOUR DEFAULT IMAGE TITLE HERE"
+  },
+  "location": {
+    "city": "YOUR CITY",
+    "state": "YOUR STATE",
+    "country": "YOUR COUNTRY",
+    "weather": "YOUR CURRENT WEATHER CONDITIONS",
+    "tempf": "YOUR CURRENT TEMPERATURE"
+  }
 }
