@@ -1,6 +1,10 @@
 from gimp_be.settings.settings import *
 from gimp_be.utils.string_tools import *
-
+from gimp_be.utils.pip import *
+try:
+    import TwitterAPI
+except:
+    pipInstall("TwitterAPI")
 
 def tweetImage(message,image_file):
     """
