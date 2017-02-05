@@ -23,29 +23,10 @@ def randomStrokes(num = 4, opt = 1):
     drawable = pdb.gimp_image_active_drawable(image)
     r = random.randrange
     for loopNum in range(0, num):
-        brushSize(35)
+        if opt == 1:
+            brushSize(35)
         ctrlPoints = [r(-200, image.width+200), r(-200, image.height+200),r(-200, image.width+200),r(-200, image.height+200)]
         pdb.gimp_paintbrush_default(drawable, len(ctrlPoints), ctrlPoints)
-
-
-def drawBars(barNum=10, opt=3):
-    image = gimp.image_list()[0]
-    drawable = pdb.gimp_image_active_drawable(image)
-    barWidth = image.width/ barNum
-    barLeft = 0
-    color = -1
-    for loopNum in range(0, barNum):
-        pdb.gimp_image_select_rectangle( image, 2, barLeft, 0, barWidth, image.height)
-        barLeft = barLeft + barWidth
-        if opt == 3:
-            randomBlend()
-        elif opt == 2:
-            color = brushColor()
-            pdb.gimp_edit_bucket_fill_full(drawable, 0, 0, 100, 0, 1, 0, SELECT_CRITERION_COMPOSITE, 0, 0)
-        else:
-            pdb.gimp_edit_bucket_fill_full(drawable, 0, 0, 100, 0, 1, 0, SELECT_CRITERION_COMPOSITE, 0, 0)
-    pdb.gimp_selection_none(image)
-    return (barNum, opt, color)
 
 
 # draw random color bars, opt 3 uses random blend
