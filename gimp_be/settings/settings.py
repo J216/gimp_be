@@ -1,14 +1,15 @@
+    import datetime, os, json, urllib2
+
 def loadSettings():
     # type: () -> object
     """
 
     :rtype: bool
     """
-    import os, json
     global settings_data
-    os.chdir(os.path.abspath(__file__)[0:os.path.abspath(__file__).replace('\\','/').rfind('/')])
-    if os.path.isfile('settings.json'):
-        with open('settings.json') as json_data_file:
+    settings_file=os.path.join(os.path.abspath(__file__)[0:os.path.abspath(__file__).replace('\\','/').rfind('/')], 'settings.json')
+    if os.path.isfile():
+        with open(settings_file) as json_data_file:
             settings_data = json.load(json_data_file)
     else:
         settings_data = {"not_loaded": "1"}
@@ -17,10 +18,9 @@ def loadSettings():
 
 def saveSettings():
     global settings_data
-    import os, json
-    os.chdir(os.path.abspath(__file__)[0:os.path.abspath(__file__).replace('\\','/').rfind('/')])
+    settings_file=os.path.join(os.path.abspath(__file__)[0:os.path.abspath(__file__).replace('\\','/').rfind('/')], 'settings.json')
     try:
-        with open('settings.json', 'w') as fp:
+        with open(settings_file, 'w') as fp:
             json.dump(settings_data, fp)
         return True
     except:
@@ -29,17 +29,16 @@ def saveSettings():
 
 def loadDefaultSettings():
     global settings_data
-    import os,json
-    if os.path.isfile('settings.json'):
-        with open('default_settings.json') as json_data_file:
+    default_settings_file=os.path.join(os.path.abspath(__file__)[0:os.path.abspath(__file__).replace('\\','/').rfind('/')],'default_settings.json')
+    try:
+        with open(default_settings_file) as json_data_file:
             settings_data = json.load(json_data_file)
         return True
-    else:
+    except:
         return False
 
 
 def getLocationData():
-    import urllib2, json
     loc_data = ()
     try:
         dict = ''
@@ -73,7 +72,6 @@ def getLocationData():
 
 
 def updateLocationData(save=1, print_conditions=1):
-    import datetime
     now = datetime.datetime.now()
     global settings_data
     temp_loc=getLocationData()
@@ -86,7 +84,6 @@ def updateLocationData(save=1, print_conditions=1):
         settings_data["location"]["weather"] = temp_loc[5]
         if save == 1:
             saveSettings()
-            loadSettings()
         if print_conditions == 1:
             print now.strftime("%A %B %d - %I:%M%p")
             print settings_data["location"]["city"] + ' ' + settings_data["location"]["state"]
@@ -95,3 +92,7 @@ def updateLocationData(save=1, print_conditions=1):
         return True
     else:
         return False
+
+
+def initialSettings():
+    
