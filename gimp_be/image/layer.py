@@ -1,3 +1,7 @@
+from gimpfu import gimp, pdb
+from gimp_be.utils import *
+import random, os
+
 def addNewLayer(opacity=100, msk=0, opt=1):
     """
     Add new layer par image, int opacity, bool mask or no mask
@@ -7,8 +11,6 @@ def addNewLayer(opacity=100, msk=0, opt=1):
     :param opt:
     :return:
     """
-    from gimpfu import gimp, pdb
-    from gimp_be.utils.string_tools import imageTitle
     image = gimp.image_list()[0]
     new_layer = gimp.Layer(image, imageTitle(0), image.width, image.height, 0, opacity, 0)
     pdb.gimp_image_add_layer(image, new_layer, 0)
@@ -29,7 +31,6 @@ def loadLayer(image_file):
     :param image_file:
     :return:
     """
-    from gimpfu import pdb, gimp
     image = gimp.image_list()[0]
     try:
         new_layer = pdb.gimp_file_load_layer(image, image_file)
@@ -46,8 +47,6 @@ def loadDirLayer(image_folder, opt=0):
     :param opt:
     :return:
     """
-    from gimpfu import gimp, pdb
-    import random, os
     image = gimp.image_list()[0]
     drawable = pdb.gimp_image_active_drawable(image)
     results = []
@@ -69,7 +68,7 @@ def loadDirLayer(image_folder, opt=0):
             else:
                 results.append(loadLayer(image_folder + image_files[x]))
             if opt%7==0:
-                pdb.gimp_layer_scale(pdb.gimp_image_get_active_layer(image), width, height, 0)
+                pdb.gimp_layer_scale(pdb.gimp_image_get_active_layer(image), image.width, image.height, 0)
             if opt%3==0:
                 pdb.gimp_layer_set_mode(pdb.gimp_image_get_active_layer(image), random.randrange(0,25))
             if opt%2==0:
@@ -96,7 +95,7 @@ def loadDirLayer(image_folder, opt=0):
         for file in image_files:
             results.append(loadLayer(image_folder + file))
             if opt%7==0:
-                pdb.gimp_layer_scale(pdb.gimp_image_get_active_layer(image), width, height, 0)
+                pdb.gimp_layer_scale(pdb.gimp_image_get_active_layer(image), image.width, image.height, 0)
             if opt%3==0:
                 pdb.gimp_layer_set_mode(pdb.gimp_image_get_active_layer(image), random.randrange(0,25))
             if opt%2==0:
@@ -126,7 +125,6 @@ def layerScaleAll():
     scale all layers to canvas size
     :return:
     """
-    from gimpfu import pdb, gimp
     image = gimp.image_list()[0]
     drawable = pdb.gimp_image_active_drawable(image)
     all_layers = image.layers
@@ -140,7 +138,6 @@ def flatten(image):
     :param image:
     :return:
     """
-    from gimpfu import pdb, gimp
     image = gimp.image_list()[0]
     pdb.gimp_image_flatten(image)
 
@@ -151,7 +148,6 @@ def editLayerMask(edit):
     :param edit:
     :return:
     """
-    from gimpfu import pdb, gimp
     image = gimp.image_list()[0]
     edit_layer = 0
     pdb.gimp_image_set_active_layer(image, image.layers[edit_layer])
@@ -164,7 +160,6 @@ def loadImageMask(file_name):
     :param file_name:
     :return:
     """
-    from gimpfu import pdb, gimp
     image = gimp.image_list()[0]
     active_layer=pdb.gimp_image_get_active_layer(image)
     layer = pdb.gimp_file_load_layer(image, file_name)
@@ -181,7 +176,6 @@ def clearLayer():
     clear active layer
     :return:
     """
-    from gimpfu import pdb, gimp
     image = gimp.image_list()[0]
     drawable = pdb.gimp_image_active_drawable(image)
     pdb.gimp_selection_all(image)
