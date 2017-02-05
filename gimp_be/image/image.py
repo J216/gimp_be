@@ -10,29 +10,14 @@ def imageSetup(w=2560, h=1920):
     :return:
     """
     global settings_data
-    global export_file_name
-    global export_path
-    global pureName
-    global x_center
-    global y_center
-    global title
-    global exported
-    global project_saved
-    project_saved=False
-    exported=False
-
-    title = imageTitle(2)
+    settings_data['image']['title'] = imageTitle(2)
     image = gimp.Image(w, h, RGB)
-    width = image.width
-    height = image.height
-    gridSpacing = max(width, height) / 24
-    pdb.gimp_image_grid_set_offset(image, x_center, y_center)
+    gridSpacing = max(image.width, image.height) / 24
+    pdb.gimp_image_grid_set_offset(image, image.width/2, image.height/2)
     pdb.gimp_image_grid_set_spacing(image, gridSpacing, gridSpacing)
     pdb.gimp_image_grid_set_style(image, 1)
-    x_center = width / 2
-    y_center = height / 2
-    export_file_name = default_save_path + 'script-draw.png'
-    new_layer = gimp.Layer(image, "Background", width, height, 0, 100, 0)
+    settings_data['path']['export_file_name'] = str(settings_data['path']['default_save_path']) + 'script-draw.png'
+    new_layer = gimp.Layer(image, "Background", image.width, image.height, 0, 100, 0)
     pdb.gimp_image_add_layer(image, new_layer, 0)
     drawable = pdb.gimp_image_active_drawable(image)
     pdb.gimp_context_set_foreground((255, 255, 255))
