@@ -4,9 +4,13 @@ from gimpfu import pdb, gimp
 
 
 # draw a tree
-def drawTree(x1=50, y1=75, angle=270, depth=9, recursiondepth=0):
+def drawTree(x1=-1, y1=-1, angle=270, depth=9, recursiondepth=0):
     image = gimp.image_list()[0]
     drawable = pdb.gimp_image_active_drawable(image)
+    if x1 == -1:
+        x1 = image.width/2
+    if y1 == -1:
+        y1 = image.height/2
     x2 = x1 + int(math.cos(math.radians(angle)) * depth * 10.0)
     y2 = y1 + int(math.sin(math.radians(angle)) * depth * 10.0)
     ctrlPoints = (x1, y1, x2, y2)
@@ -24,9 +28,13 @@ def drawTree(x1=50, y1=75, angle=270, depth=9, recursiondepth=0):
 
 
 # draw a tree with 3 branches per node
-def drawTriTree(x1=100, y1=100, angle=270, depth=6, recursiondepth=0, size=10):
+def drawTriTree(x1=-1, y1=-1, angle=270, depth=6, recursiondepth=0, size=10):
     image = gimp.image_list()[0]
     drawable = pdb.gimp_image_active_drawable(image)
+    if x1 == -1:
+        x1 = image.width/2
+    if y1 == -1:
+        y1 = image.height/2
     if depth:
         x2 = x1 + int(math.cos(math.radians(angle)) * depth * size) + random.randrange(-12, 12)
         y2 = y1 + int(math.sin(math.radians(angle)) * depth * size) + random.randrange(-12, 12)
@@ -40,9 +48,13 @@ def drawTriTree(x1=100, y1=100, angle=270, depth=6, recursiondepth=0, size=10):
 
 
 # draw random color tri-tree
-def drawColorTriTree(x1=50, y1=75, angle=270, depth=9, recursiondepth=0):
+def drawColorTriTree(x1=-1, y1=-1, angle=270, depth=9, recursiondepth=0):
     image = gimp.image_list()[0]
     drawable = pdb.gimp_image_active_drawable(image)
+    if x1 == -1:
+        x1 = image.width/2
+    if y1 == -1:
+        y1 = image.height/2
     brushSize(depth + 1)
     if depth:
         x2 = x1 + int(math.cos(math.radians(angle)) * depth * 10.0) + random.randrange(-12, 12)
@@ -55,9 +67,13 @@ def drawColorTriTree(x1=50, y1=75, angle=270, depth=9, recursiondepth=0):
 
 
 # draw a tree
-def drawOddTree(x1=50, y1=75, angle=270, depth=9, recursiondepth=0):
+def drawOddTree(x1=-1, y1=-1, angle=270, depth=9, recursiondepth=0):
     image = gimp.image_list()[0]
     drawable = pdb.gimp_image_active_drawable(image)
+    if x1 == -1:
+        x1 = image.width/2
+    if y1 == -1:
+        y1 = image.height/2
     brushSize((depth * 8 + 30))
     if depth:
         x2 = x1 + int(math.cos(math.radians(angle)) * depth * 10.0)
@@ -76,14 +92,18 @@ def drawOddTree(x1=50, y1=75, angle=270, depth=9, recursiondepth=0):
 
 
 # draw a tree
-def drawForestTree(x1=50, y1=75, angle=270, depth=9, size=10, recursiondepth=0):
+def drawForestTree(x1=-1, y1=-1, angle=270, depth=9, size=10, recursiondepth=0):
     image = gimp.image_list()[0]
     drawable = pdb.gimp_image_active_drawable(image)
+    if x1 == -1:
+        x1 = image.width/2
+    if y1 == -1:
+        y1 = image.height/2
     if depth:
         x2 = x1 + int(math.cos(math.radians(angle)) * depth * 10.0)
         y2 = y1 + int(math.sin(math.radians(angle)) * depth * 10.0)
         ctrlPoints = (x1, y1, x2, y2)
-        brushSize(depth * depth * (int(size / ((height - y1)) / height)) + 4)
+        brushSize(depth * depth * (int(size / ((image.height - y1)) / image.height)) + 4)
         pdb.gimp_paintbrush_default(drawable, len(ctrlPoints), ctrlPoints)
         if not random.randrange(0, 23) == 23:
             drawForestTree(x2, y2, angle - 20, depth - 1, size, recursiondepth + 1)
