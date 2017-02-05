@@ -30,6 +30,9 @@ def tweetText(opt=0):
     """
     global settings_data
     import datetime
+    now = datetime.datetime.now()
+    
+    updateLocationData()
     title = imageTitle(2)
     city = settings_data["location"]["city"]
     state = settings_data["location"]["state"]
@@ -40,7 +43,7 @@ def tweetText(opt=0):
     time_stamp = str(datetime.datetime.now())
     tweet_text = ''
     if opt == 0:
-        tweet_text = title + '\nby ' + settings_data['user']['author'] + '\n' + city + ' ' + state + ' | ' + host_name + '\n' + tempf + 'F ' + weather
+        tweet_text = title + '\nby ' + settings_data['user']['author'] + '\n' + city + ' ' + state + ' | ' + host_name + '\n' + tempf + 'F ' + weather + '\n' + now.strftime("%A %B %d - %I:%M%p")
     elif opt == 1:
         tweet_text = title + '\nby ' + settings_data['user']['author'] + ' ' + time_stamp[:4] + '\n' + hashtags
     else:
