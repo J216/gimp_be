@@ -209,6 +209,7 @@ def doPaintings(num=10, opt=3):
     for x in range(0, num):
         doPainting('a')
         if opt == 3:
+            signImage()
             qT()
         closeAll()
 
