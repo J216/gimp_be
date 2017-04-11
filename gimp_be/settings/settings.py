@@ -1,4 +1,4 @@
-    import datetime, os, json, urllib2
+import datetime, os, json, urllib2
 
 def loadSettings():
     # type: () -> object
@@ -8,7 +8,7 @@ def loadSettings():
     """
     global settings_data
     settings_file=os.path.join(os.path.abspath(__file__)[0:os.path.abspath(__file__).replace('\\','/').rfind('/')], 'settings.json')
-    if os.path.isfile():
+    if os.path.isfile(settings_file):
         with open(settings_file) as json_data_file:
             settings_data = json.load(json_data_file)
     else:
@@ -95,4 +95,4 @@ def updateLocationData(save=1, print_conditions=1):
 
 
 def initialSettings():
-    
+    print "settings coming soon"
