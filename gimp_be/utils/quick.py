@@ -59,4 +59,3 @@ def qL():
     drawable = pdb.gimp_image_active_drawable(image)
     addNewLayer()
     pdb.gimp_edit_fill(drawable, 1)
-
