@@ -35,6 +35,7 @@ def loadLayer(image_file):
     try:
         new_layer = pdb.gimp_file_load_layer(image, image_file)
         pdb.gimp_image_add_layer(image, new_layer, 0)
+        pdb.gimp_image_set_active_layer(image, new_layer)
         return 1
     except:
         return 0
