@@ -6,7 +6,7 @@ from layer import *
 
 def addStamp(options=0, stamp_type="", opacity=90, stamp_folder="", scale=[], position=[]):
     if stamp_folder == "":
-        stamp_folder = os.environ.get('USERPROFILE','c:/').replace('\\','/')+'/'+'Google Drive/art/stamps/'
+        stamp_folder = settings_data['path']['art_folder']+'stamps/'
     stamp_file = ""
     stamp_files = []
     if options == 0:
@@ -40,4 +40,36 @@ def addStamp(options=0, stamp_type="", opacity=90, stamp_folder="", scale=[], po
         pdb.gimp_layer_set_offsets(active_layer, image.width/2-100, image.height/2-100)
     else:
         pdb.gimp_layer_set_offsets(active_layer, position[0], position[1])
-   
+
+
+def addSticker(options=0, sticker_type="", opacity=90, sticker_folder="", scale=[], position=[]):
+    if sticker_folder == "":
+        sticker_folder = settings_data['path']['art_folder']+'stickers/'
+    addStamp(options, sticker_type, opacity, sticker_folder, scale, position)
+
+
+def addFractal(options=0, fractal_type="", opacity=90, fractal_folder="", scale=[], position=[]):
+    image = gimp.image_list()[0]
+    if fractal_folder == "":
+        fractal_folder = settings_data['path']['art_folder']+'fractals/'
+    if position == []:
+        position = [0,0]
+    if scale == []:
+        scale=[image.width, image.height]
+    addStamp(options, fractal_type, opacity, fractal_folder, scale, position)
+    active_layer = pdb.gimp_image_get_active_layer(image)
+    pdb.gimp_layer_set_mode(active_layer, random.choice([17,6,15,0,0,0,0,0,0]))
+
+
+def addPhoto(options=0, photo_type="", opacity=90, photo_folder="", scale=[], position=[]):
+    image = gimp.image_list()[0]
+    if photo_folder == "":
+        photo_folder = settings_data['path']['art_folder']+'photos/'
+    if position == []:
+        position = [0,0]
+    if scale == []:
+        scale=[image.width, image.height]
+    addStamp(options, photo_type, opacity, photo_folder, scale, position)
+    active_layer = pdb.gimp_image_get_active_layer(image)
+    pdb.gimp_layer_set_mode(active_layer, random.choice([17,6,15,0,0,0,0,0,0]))
+
