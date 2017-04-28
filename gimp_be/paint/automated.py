@@ -2,30 +2,9 @@ from gimpfu import gimp, pdb
 from gimp_be.utils import *
 from gimp_be.draw import *
 from gimp_be.image import *
-
+from time import sleep
 import random
 
-#automated creation of dimensionality study piece
-def autoDimensionality(folder='C:\\Users\\Kodkod\\Google Drive\\art\\',opt=0):
-    qS()
-    loadDirLayer(folder,9699690)
-    if opt == 1:
-        qT()
-    else:
-        qX()
-
-#do batch of dimensionality paintings
-def multiDimensionality(folder,num=50,opt=0,img_target=0):
-    if opt == 0 and img_target == 0:
-        for x in range(0,num):
-            tweet_opt=random.choice(range(1,50))
-            if tweet_opt == 42:
-                tweet_opt=1
-            autoDimensionality(folder,tweet_opt)
-            closeAll()
-        return True
-    else:
-        return False
 
 # Full auto painting
 def doPainting(paint_string='a'):
@@ -205,14 +184,118 @@ def doPainting(paint_string='a'):
 
 
 #do batch of paintings 10 is the default
-def doPaintings(num=10, opt=3):
+def doPaintings(option="",num=10,delay=240,tweet=0):
     for x in range(0, num):
-        doPainting('a')
-        if opt == 3:
+        doPainting()
+        qX()
+        if tweet:
             signImage()
             qT()
+            closeAll()
+            sleep(delay)
         closeAll()
 
+
+#automated creation of dimensionality study piece
+def autoDimensionality(folder='',tweet=0):
+    if folder == '':
+        folder = settings_data['path']['art_folder']
+    qS()
+    loadDirLayer(folder,9699690)
+    if tweet:
+        signImage()
+        qT()
+    else:
+        qX()
+
+
+#do batch of dimensionality paintings
+def multiDimensionality(folder,num=50,opt=0,img_target=0):
+    if opt == 0 and img_target == 0:
+        for x in range(0,num):
+            tweet_opt=random.choice(range(1,50))
+            if tweet_opt == 42:
+                tweet_opt=1
+            autoDimensionality(folder,tweet_opt)
+            closeAll()
+        return True
+    else:
+        return False
+
+
+def doInkBlots(option="",num=10,delay=600,tweet=0):
+    for x in range(num):
+        qS()
+        drawInkBlot(option)
+        qX()
+        if tweet:
+            signImage()
+            tweetImage('"What do you see?"\n"It looks like '+imageTitle(2)+' to me."',qX()[1])
+            closeAll()
+            sleep(delay)
+        else:
+            closeAll()
+
+
+def doFractalMasking(option="",num=12,delay=300,tweet=0):
+    for x in range(num):
+        qS()
+        if random.choice([0,0,0,0,1,1,1]):
+            image=gimp.image_list()[0]
+            drawable = pdb.gimp_image_active_drawable(image)
+            pdb.gimp_invert(drawable)
+        for x in range(random.choice([3,6,7,8,9,10])):
+            addFractal()
+            tileMask([random.choice([1,2,3,4,5,6,7,8,12]),random.choice([1,2,3,4,5,6,7,8,12])])
+        if tweet:
+            signImage()
+            tweetImage('"Is it really self similar?"\n"Even '+imageTitle(2)+' will be '+imageTitle(2)+' someday."\n#fractals #python #GIMP',qX()[1])
+            closeAll()
+            sleep(delay)
+        else:
+            closeAll()
+
+
+def doPhotoMasking(option="",num=12,delay=300,tweet=0):
+    for x in range(num):
+        qS()
+        if random.choice([0,0,0,0,1,1,1]):
+            image=gimp.image_list()[0]
+            drawable = pdb.gimp_image_active_drawable(image)
+            pdb.gimp_invert(drawable)
+        for x in range(random.choice([3,6,7,8,9,10])):
+            addPhoto()
+            tileMask([random.choice([1,2,3,4,5,6,7,8,12]),random.choice([1,2,3,4,5,6,7,8,12])])
+        if tweet:
+            signImage()
+            tweetImage('Photo Masking Mix\n'+imageTitle(2)+'\n by Jared Haer\n#photocomposite #python #gimp #digitalart',qX()[1])
+            closeAll()
+            sleep(delay)
+        else:
+            closeAll()
+
+
+def doHybridMasking(option="",num=12,delay=300,tweet=0):
+    for x in range(num):
+        qS()
+        drawInkBlot()
+        if random.choice([0,0,0,0,1,1,1]):
+            image=gimp.image_list()[0]
+            drawable = pdb.gimp_image_active_drawable(image)
+            pdb.gimp_invert(drawable)
+        for x in range(random.choice([3,6,7,8,9,10])):
+            addPhoto()
+            tileMask([random.choice([1,2,3,4,5,6,7,8,12]),random.choice([1,2,3,4,5,6,7,8,12])])
+            addFractal()
+            tileMask([random.choice([1,2,3,4,5,6,7,8,12]),random.choice([1,2,3,4,5,6,7,8,12])])
+        if tweet:
+            signImage()
+            tweetImage('Fractal-Photo Masking Mix\n'+imageTitle(2)+'\n by Jared Haer\n#fractals #python #gimp #digitalart',qX()[1])
+            closeAll()
+            sleep(delay)
+        else:
+            qX()
+            closeAll()
 
 def doWeatherPainting():
     # draw day
