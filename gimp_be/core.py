@@ -1,1 +1,1 @@
-from gimp_be.settings.settings import *
+#nothing in the center
