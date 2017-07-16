@@ -1,4 +1,9 @@
 {
-  "study_name":"c:/study/location/root/containting/json/",
-  "study_name2":"c:/study/location2/root/containting/json/"
+    'study':{
+        'name':'Hybrid Masking Study',
+        'description':{
+            '001':'This is a study of using GIMP with Python to mix photos I have taken with fractals I have found in MB3D. Mask layer are created using various brush dynamics.'
+        }
+        'hashtags':'fractals python gimp digitalart photos masking mixing coding scripting code script automation'
+    }
 }
