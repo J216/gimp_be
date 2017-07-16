@@ -1,12 +1,11 @@
 from gimpfu import pdb, gimp
-from gimp_be.image.save import saveJPG, savePNG, saveXCFProject
-from gimp_be.network.twitter import tweetText, tweetImage
-from gimp_be.image.image import imageSetup
-from gimp_be.image.layer import addNewLayer
 from random import randrange, choice
 from string import letters
+from gimp_be.image.save import saveJPG, savePNG, saveXCFProject
+from gimp_be.network import *
+from gimp_be.image.image import imageSetup
+from gimp_be.image.layer import addNewLayer
 from gimp_be.settings import *
-settings_data = loadSettings()
 
 def qX():
     """
@@ -23,12 +22,12 @@ def qX():
 
 
 def qT():
+    from gimp_be.network.twitter import tweetText, tweetImage
     global settings_data
     exported=qX()
     if exported[0]:
         tweet = tweetText(0)
     return (tweetImage(tweet, exported[1]) == '200', tweet)
-
 
 
 # quick export jpg default with unique file name
