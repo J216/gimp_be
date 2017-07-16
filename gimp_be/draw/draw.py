@@ -277,7 +277,8 @@ def gridCenters(grid=[]):
     return tile_centers
 
 
-def tileMask(grid=[]):
+def tile(grid=[],option="mibd",irregularity=0.3):
+    from random import randrange
     image=gimp.image_list()[0]
     layer=pdb.gimp_image_get_active_layer(image)
     if grid==[]:
@@ -287,20 +288,43 @@ def tileMask(grid=[]):
             grid=[3,4]
         else:
             grid=[4,3]
-    mask = pdb.gimp_layer_create_mask(layer,0)
-    pdb.gimp_image_add_layer_mask(image, layer,mask)
-    editLayerMask(1)
-    drawable = pdb.gimp_image_active_drawable(image)
-    tile_centers=gridCenters(grid)
-    randomBrush()
-    randomDynamics()
-    for tile in tile_centers:
-        brushSize(image.width/grid[0])
-        brushColor(0,0,0)
+    if "m" in option:
+        mask = pdb.gimp_layer_create_mask(layer,0)
+        pdb.gimp_image_add_layer_mask(image, layer,mask)
         editLayerMask(1)
-        pdb.gimp_paintbrush_default(drawable, len(tile), tile)
-    pdb.gimp_invert(drawable)
-    editLayerMask(0)
+    drawable = pdb.gimp_image_active_drawable(image)
+    grid_spacing = image.width/grid[0]
+    tile_centers=gridCenters(grid)
+    if irregularity > 0.0:
+        i_tiles=[]
+        for tile in tile_centers:
+            tile[0]=tile[0]+random.randrange((-1*int(grid_spacing*irregularity)),int(grid_spacing*irregularity))
+            tile[1]=tile[1]+random.randrange((-1*int(grid_spacing*irregularity)),int(grid_spacing*irregularity))
+            i_tiles.append(tile)
+        tile_centers=i_tiles
+    if "b" in option:
+        randomBrush()
+    if "d" in option:
+        randomDynamics()
+    brushSize(grid_spacing)
+    brushColor(0,0,0)
+    for tile in tile_centers:
+        if "m" in option:
+            editLayerMask(1)
+        if irregularity == 0:
+            pdb.gimp_paintbrush_default(drawable, len(tile), tile)
+        elif randrange(50.0*irregularity)+randrange(50.0*irregularity)>50.0:
+            randomDynamics()
+        else:
+            pdb.gimp_paintbrush_default(drawable, len(tile), tile)
+    if "g" in option:
+        pdb.plug_in_gauss(image, drawable, 20.0, 20.0, 0)
+    if "w" in option:
+        pdb.plug_in_whirl_pinch(image, drawable, 90, 0.0, 1.0)
+    if "i" in option:
+        pdb.gimp_invert(drawable)
+    if "m" in option:
+        editLayerMask(0)
 
 
 def drawAkuTree(branches=6,tree_height=0, position=0):
