@@ -14,7 +14,7 @@ active_study = {
 }
 
 
-def saveSettings():
+def saveStudySettings():
     import json
     global active_study
     global settings_data
@@ -26,31 +26,27 @@ def saveSettings():
         return False
 
 
-def studyStart(name='0', description='0', tweet='default tweet', folder='0', new=True):
+def studyStart(name='', description='', folder=''):
     # set file name and folder
     # make new folder
     # serialize name set
     # set tweet for study
     # set image comments
-
     # study has subfolders for sessions
-
     # create method to fill tweet to capacity with hashtags
-
     # study ==> sessions --> iterations --> image,filename,title,date,comment
     global active_study
     global settings_data
-    global active_study
-    global export_file_name
-    global study_session_iteration
-    global study_description
-    global study_name
-    global study_session_iteration_name
-    global study_creation_date
-    global study_tweet
-    global current_study_folder  # whole folder name? or just the name in the studies folder?
-    global studies_folder
-    global session_loaded
+    ## ALL OF THESE SHOULD BE IN THE JSON FOR ACTIVE_STUDY ##
+    # global study_session_iteration
+    # global study_description
+    # global study_name
+    # global study_session_iteration_name
+    # global study_creation_date
+    # global study_tweet
+    # global current_study_folder  # whole folder name? or just the name in the studies folder?
+    # global studies_folder
+    # global session_loaded
     import os
     import datetime
     time_stamp = datetime.datetime.now()
@@ -97,11 +93,6 @@ def studyStart(name='0', description='0', tweet='default tweet', folder='0', new
     # write study file ./study.xml
 
 
-# write XML for study
-def studyWriteXML():
-    print('<study> ... </study>')
-
-
 # does collage of multiple images from study
 def studyComposite():
     print('does collage of multiple images from study')
@@ -123,12 +114,12 @@ def studySessionName():
 
 
 # start session
-def studySessionStart(study, name=' '):
-    global session_name
-    global study_session_iteration
-    if name == ' ':
-        session_name = studySessionName()
-        study_session_iteration = 0
+def studySessionStart(name='',session_it=u'0'):
+    global active_study
+    if name == '':
+        name= studySessionName()
+    active_study['session_name'] = name
+    active_study['study_session_iteration'] = session_it
 
         # setup session variables
 
