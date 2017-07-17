@@ -1,8 +1,10 @@
 from gimpfu import gimp, pdb
 from gimp_be.utils import *
 from gimp_be.draw import *
+from gimp_be.network import *
 from gimp_be.image import *
 from time import sleep
+from gimp_be.network.twitter import tweetText, tweetImage
 import random
 
 
@@ -223,7 +225,7 @@ def multiDimensionality(folder,num=50,opt=0,img_target=0):
         return False
 
 
-def doInkBlots(option="",num=10,delay=600,tweet=0):
+def doInkBlots(num=10,delay=600,tweet=0,option=""):
     for x in range(num):
         qS()
         drawInkBlot(option)
@@ -237,7 +239,7 @@ def doInkBlots(option="",num=10,delay=600,tweet=0):
             closeAll()
 
 
-def doFractalMasking(option="",num=12,delay=300,tweet=0):
+def doFractalMasking(num=12,delay=300,tweet=0,option=""):
     for x in range(num):
         qS()
         if random.choice([0,0,0,0,1,1,1]):
@@ -246,7 +248,7 @@ def doFractalMasking(option="",num=12,delay=300,tweet=0):
             pdb.gimp_invert(drawable)
         for x in range(random.choice([3,6,7,8,9,10])):
             addFractal()
-            tileMask([random.choice([1,2,3,4,5,6,7,8,12]),random.choice([1,2,3,4,5,6,7,8,12])])
+            tile([random.choice([1,2,3,4,5,6,7,8,12]),random.choice([1,2,3,4,5,6,7,8,12])])
         if tweet:
             signImage()
             tweetImage('"Is it really self similar?"\n"Even '+imageTitle(2)+' will be '+imageTitle(2)+' someday."\n#fractals #python #GIMP',qX()[1])
@@ -256,46 +258,85 @@ def doFractalMasking(option="",num=12,delay=300,tweet=0):
             closeAll()
 
 
-def doPhotoMasking(option="",num=12,delay=300,tweet=0):
+def doRandomMasking(num=25,delay=300,tweet=1,option="",study_name="Random Masking Study",noise=0.3):
     for x in range(num):
         qS()
+        image=gimp.image_list()[0]
+        drawable = pdb.gimp_image_active_drawable(image)
         if random.choice([0,0,0,0,1,1,1]):
-            image=gimp.image_list()[0]
-            drawable = pdb.gimp_image_active_drawable(image)
             pdb.gimp_invert(drawable)
-        for x in range(random.choice([3,6,7,8,9,10])):
-            addPhoto()
-            tileMask([random.choice([1,2,3,4,5,6,7,8,12]),random.choice([1,2,3,4,5,6,7,8,12])])
+        for x in range(random.choice([13,6,7,8,9,10])):
+            qRes(opacity=random.choice([13,25,33,50,66,75,85]))
+            layer_mode_par = {'layer': pdb.gimp_image_get_active_layer(image), 'mode': random.randrange(0, 25)}
+            pdb.gimp_layer_set_mode(layer_mode_par['layer'], layer_mode_par['mode'])
+            if 25 > random.randrange(0,100):
+                tile([random.randrange(1,12),random.randrange(1,12)])
         if tweet:
             signImage()
-            tweetImage('Photo Masking Mix\n'+imageTitle(2)+'\n by Jared Haer\n#photocomposite #python #gimp #digitalart',qX()[1])
-            closeAll()
-            sleep(delay)
-        else:
-            closeAll()
-
-
-def doHybridMasking(option="",num=12,delay=300,tweet=0):
-    for x in range(num):
-        qS()
-        drawInkBlot()
-        if random.choice([0,0,0,0,1,1,1]):
-            image=gimp.image_list()[0]
-            drawable = pdb.gimp_image_active_drawable(image)
-            pdb.gimp_invert(drawable)
-        for x in range(random.choice([3,6,7,8,9,10])):
-            addPhoto()
-            tileMask([random.choice([1,2,3,4,5,6,7,8,12]),random.choice([1,2,3,4,5,6,7,8,12])])
-            addFractal()
-            tileMask([random.choice([1,2,3,4,5,6,7,8,12]),random.choice([1,2,3,4,5,6,7,8,12])])
-        if tweet:
-            signImage()
-            tweetImage('Fractal-Photo Masking Mix\n'+imageTitle(2)+'\n by Jared Haer\n#fractals #python #gimp #digitalart',qX()[1])
+            tweetImage('Random Masking Mix\n'+imageTitle(2)+'\n by Jared Haer\n#photocomposite #python #digitalart',qX()[1])
             closeAll()
             sleep(delay)
         else:
             qX()
             closeAll()
+
+
+def doHybridMasking(num=25,delay=300,tweet=1,option="Resp",study_name="Random Effect Study sc",noise=0.3):
+    from random import randrange
+    for x in range(num):
+        qS()
+        drawInkBlot()
+        if 'SpBG' in option:
+            addSpacePhoto(opacity=50)
+        if "Re" in option:
+            applyEffect()
+        for x in range(4,(10+random.randrange(int(noise*5*-1),int(noise*10)))):
+            if 'ph'in option:
+                addPhoto()
+                if "Re" in option:
+                    applyEffect()
+                tile([random.randrange(1,12),random.randrange(1,12)])
+                if "Re" in option:
+                    editLayerMask(1)
+                    applyEffect()
+                    editLayerMask(0)
+            if 'sc' in option:
+                addScriptDrawing()
+                if "Re" in option:
+                    applyEffect()
+                tile([random.randrange(1,12),random.randrange(1,12)])
+                if "Re" in option:
+                    editLayerMask(1)
+                    applyEffect()
+                    editLayerMask(0)
+            if 'sp' in option:
+                addSpacePhoto()
+                if "Re" in option:
+                    applyEffect()
+                tile([random.randrange(1,12),random.randrange(1,12)])
+                if "Re" in option:
+                    editLayerMask(1)
+                    applyEffect()
+                    editLayerMask(0)
+            if 'fr' in option:
+                addFractal()
+                if "Re" in option:
+                    applyEffect()
+                tile([random.randrange(1,12),random.randrange(1,12)])
+                if "Re" in option:
+                    editLayerMask(1)
+                    applyEffect()
+                    editLayerMask(0)
+        if tweet:
+            signImage()
+            tweet=imageTitle(2)+'\n by Jared Haer\n'+study_name+'\n'
+            tweetImage(tweet+hashtagString(len(tweet)),qX()[1])
+            closeAll()
+            sleep(delay)
+        else:
+            qX()
+            closeAll()
+
 
 def doWeatherPainting():
     # draw day
