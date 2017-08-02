@@ -6,10 +6,12 @@ from gimp_be.image import *
 from time import sleep
 from gimp_be.network.twitter import tweetText, tweetImage
 import random
+from random import randrange
 
 
-# Full auto painting
-def doPainting(paint_string='a'):
+
+def paint():
+    # Full auto painting
     global settings_data
     width = int(settings_data['image']['width'])
     height = int(settings_data['image']['height'])
@@ -61,7 +63,6 @@ def doPainting(paint_string='a'):
         layer_mode_par = {'layer': pdb.gimp_image_get_active_layer(image), 'mode': random.randrange(0, 25)}
         pdb.gimp_layer_set_mode(layer_mode_par['layer'], layer_mode_par['mode'])
         editLayerMask(0)
-
         # 2. paint layer
         if x % 4 == 0:
             drawBars_par = {'Number': random.choice((2, 3, 4, 5, 6, 7, 8, 12, 16, 32, 64, 128)),
@@ -78,7 +79,6 @@ def doPainting(paint_string='a'):
         randomBlend()
         editLayerMask(0)
         image = gimp.image_list()[0]
-        qX()
         # 3. add layer
         layer_add_par = {'opacity': random.randrange(55, 100), 'msk': 1}
         addNewLayer(**layer_add_par)
@@ -117,7 +117,7 @@ def doPainting(paint_string='a'):
             brushSize(50)
             drawTree_par = {'x1': random.randrange(width / 4, 3 * (width / 4)),
                             'y1': random.randrange(height / 4, 3 * (height / 4)), 'angle': random.randrange(0, 360),
-                            'depth': random.randrange(7, 12)}
+                            'depth': random.randrange(5, 7)}
             drawOddTree(**drawTree_par)  # x1, y1, angle, depth
         if random.choice((0, 1, 1, 1, 1)):
             if random.choice((0, 1, 1, 1, 1)):
@@ -138,7 +138,6 @@ def doPainting(paint_string='a'):
         plasma_par = {'Image': image, 'Draw': drawable, 'Seed': random.randrange(1, 1000), 'Turbulence': random.choice(
                 (0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 1.0, 1.5, 1.1, 1.4, 1.8, 2.0, 2.7))}
         pdb.plug_in_plasma(plasma_par['Image'], plasma_par['Draw'], plasma_par['Seed'], plasma_par['Turbulence'])
-        qX()
         # 4. add layer
         layer_add_par = {'opacity': random.randrange(55, 100), 'msk': 1}
         addNewLayer(**layer_add_par)
@@ -157,7 +156,7 @@ def doPainting(paint_string='a'):
             }
             drawSinWave(**drawSin_par)
         if random.choice((0, 1, 1, 1, 1)):
-            drawForest(random.randrange(15, 128), 0)
+            drawForest(random.randrange(15, 64), 0)
         if random.choice((0, 1, 1, 1, 1)):
             # 5. mask edit
             editLayerMask(1)
@@ -182,161 +181,119 @@ def doPainting(paint_string='a'):
     drawable = pdb.gimp_image_active_drawable(image)
     canvas_par = {'Image': image, 'Draw': drawable, 'Direction': 1, 'Depth': 1}
     pdb.plug_in_apply_canvas(canvas_par['Image'], canvas_par['Draw'], canvas_par['Direction'], canvas_par['Depth'])
-    qX()
 
-
-#do batch of paintings 10 is the default
-def doPaintings(option="",num=10,delay=240,tweet=0):
-    for x in range(0, num):
-        doPainting()
-        qX()
-        if tweet:
-            signImage()
-            qT()
-            closeAll()
-            sleep(delay)
-        closeAll()
-
-
-#automated creation of dimensionality study piece
-def autoDimensionality(folder='',tweet=0):
+def dimensionality(folder='',tweet=0):
+    # automated creation of dimensionality study piece
+    global settings_data
     if folder == '':
-        folder = settings_data['path']['art_folder']
-    qS()
+        folder = settings_data['path']['art_folder']+"resources/"+random.choice(["photos","fractals","plants","rock"])+"/"
     loadDirLayer(folder,9699690)
-    if tweet:
-        signImage()
-        qT()
-    else:
-        qX()
 
-
-#do batch of dimensionality paintings
-def multiDimensionality(folder,num=50,opt=0,img_target=0):
-    if opt == 0 and img_target == 0:
-        for x in range(0,num):
-            tweet_opt=random.choice(range(1,50))
-            if tweet_opt == 42:
-                tweet_opt=1
-            autoDimensionality(folder,tweet_opt)
-            closeAll()
-        return True
-    else:
-        return False
-
-
-def doInkBlots(num=10,delay=600,tweet=0,option=""):
-    for x in range(num):
-        qS()
-        drawInkBlot(option)
-        qX()
-        if tweet:
-            signImage()
-            tweetImage('"What do you see?"\n"It looks like '+imageTitle(2)+' to me."',qX()[1])
-            closeAll()
-            sleep(delay)
-        else:
-            closeAll()
-
-
-def doFractalMasking(num=12,delay=300,tweet=0,option=""):
-    for x in range(num):
-        qS()
-        if random.choice([0,0,0,0,1,1,1]):
-            image=gimp.image_list()[0]
-            drawable = pdb.gimp_image_active_drawable(image)
-            pdb.gimp_invert(drawable)
-        for x in range(random.choice([3,6,7,8,9,10])):
-            addFractal()
-            tile([random.choice([1,2,3,4,5,6,7,8,12]),random.choice([1,2,3,4,5,6,7,8,12])])
-        if tweet:
-            signImage()
-            tweetImage('"Is it really self similar?"\n"Even '+imageTitle(2)+' will be '+imageTitle(2)+' someday."\n#fractals #python #GIMP',qX()[1])
-            closeAll()
-            sleep(delay)
-        else:
-            closeAll()
-
-
-def doRandomMasking(num=25,delay=300,tweet=1,option="",study_name="Random Masking Study",noise=0.3):
-    for x in range(num):
-        qS()
+def fractalMasking():
+    # fractal layered wtih tile masks
+    if random.choice([0,0,0,0,1,1,1]):
         image=gimp.image_list()[0]
         drawable = pdb.gimp_image_active_drawable(image)
-        if random.choice([0,0,0,0,1,1,1]):
-            pdb.gimp_invert(drawable)
-        for x in range(random.choice([13,6,7,8,9,10])):
-            qRes(opacity=random.choice([13,25,33,50,66,75,85]))
-            layer_mode_par = {'layer': pdb.gimp_image_get_active_layer(image), 'mode': random.randrange(0, 25)}
-            pdb.gimp_layer_set_mode(layer_mode_par['layer'], layer_mode_par['mode'])
-            if 25 > random.randrange(0,100):
-                tile([random.randrange(1,12),random.randrange(1,12)])
-        if tweet:
-            signImage()
-            tweetImage('Random Masking Mix\n'+imageTitle(2)+'\n by Jared Haer\n#photocomposite #python #digitalart',qX()[1])
-            closeAll()
-            sleep(delay)
-        else:
-            qX()
-            closeAll()
+        pdb.gimp_invert(drawable)
+    for x in range(random.choice([3,6,7,8,9,10])):
+        addFractal()
+        tile([random.choice([1,2,3,4,5,6,7,8,12]),random.choice([1,2,3,4,5,6,7,8,12])])
 
+def randomMasking():
+    # tile mask from random resources
+    image=gimp.image_list()[0]
+    drawable = pdb.gimp_image_active_drawable(image)
+    if random.choice([0,0,0,0,1,1,1]):
+        pdb.gimp_invert(drawable)
+    for x in range(random.choice([13,6,7,8,9,10])):
+        qRes(opacity=random.choice([13,25,33,50,66,75,85]))
+        layer_mode_par = {'layer': pdb.gimp_image_get_active_layer(image), 'mode': random.randrange(0, 25)}
+        pdb.gimp_layer_set_mode(layer_mode_par['layer'], layer_mode_par['mode'])
+        if 25 > random.randrange(0,100):
+            tile([random.randrange(1,12),random.randrange(1,12)])
 
-def doHybridMasking(num=25,delay=300,tweet=1,option="Resp",study_name="Random Effect Study sc",noise=0.3):
-    from random import randrange
-    for x in range(num):
+def hybridMasking(option="SpBGsp", noise=0.3):
+    # masking resources with lots of options
+    drawInkBlot()
+    if 'SpBG' in option:
+        addSpacePhoto(opacity=50)
+    if "Re" in option:
+        applyEffect()
+    for x in range(4,(10+random.randrange(int(noise*5*-1),int(noise*10)))):
+        if 'ph'in option:
+            qRes()
+            if "Re" in option:
+                applyEffect()
+            tile([random.randrange(1,12),random.randrange(1,12)])
+            if "Re" in option:
+                editLayerMask(1)
+                applyEffect()
+                editLayerMask(0)
+        if 'sc' in option:
+            qRes()
+            if "Re" in option:
+                applyEffect()
+            tile([random.randrange(1,12),random.randrange(1,12)])
+            if "Re" in option:
+                editLayerMask(1)
+                applyEffect()
+                editLayerMask(0)
+        if 'sp' in option:
+            qRes()
+            if "Re" in option:
+                applyEffect()
+            tile([random.randrange(1,12),random.randrange(1,12)])
+            if "Re" in option:
+                editLayerMask(1)
+                applyEffect()
+                editLayerMask(0)
+        if 'fr' in option:
+            qRes()
+            if "Re" in option:
+                applyEffect()
+            tile([random.randrange(1,12),random.randrange(1,12)])
+            if "Re" in option:
+                editLayerMask(1)
+                applyEffect()
+                editLayerMask(0)
+
+def spikeDif():
+    # draw spike ball or random rays
+    spikeBallStack(depth=20)
+    if random.choice([0,0,0,0,0,1,1,1,1]):
+        applyEffect()
+
+def inkBlot():
+    # draq basic ink blot
+    inkBlotStack()
+    applyEffect()
+
+def skeleton(type="",num=10,delay=10,options={"tweet":1, "study_name":"Multifunctional Study"}):
+    # function to take care of exporting and tweet all images produces
+    automations = {"spikeDif" : spikeDif,
+                    "inkBlot" : inkBlot,
+                    "hybridMasking" : hybridMasking,
+                    "paint" : paint,
+                    "fractalMasking" : fractalMasking,
+                    "randomMasking" : randomMasking}
+    for i in range(0,num):
         qS()
-        drawInkBlot()
-        if 'SpBG' in option:
-            addSpacePhoto(opacity=50)
-        if "Re" in option:
-            applyEffect()
-        for x in range(4,(10+random.randrange(int(noise*5*-1),int(noise*10)))):
-            if 'ph'in option:
-                addPhoto()
-                if "Re" in option:
-                    applyEffect()
-                tile([random.randrange(1,12),random.randrange(1,12)])
-                if "Re" in option:
-                    editLayerMask(1)
-                    applyEffect()
-                    editLayerMask(0)
-            if 'sc' in option:
-                addScriptDrawing()
-                if "Re" in option:
-                    applyEffect()
-                tile([random.randrange(1,12),random.randrange(1,12)])
-                if "Re" in option:
-                    editLayerMask(1)
-                    applyEffect()
-                    editLayerMask(0)
-            if 'sp' in option:
-                addSpacePhoto()
-                if "Re" in option:
-                    applyEffect()
-                tile([random.randrange(1,12),random.randrange(1,12)])
-                if "Re" in option:
-                    editLayerMask(1)
-                    applyEffect()
-                    editLayerMask(0)
-            if 'fr' in option:
-                addFractal()
-                if "Re" in option:
-                    applyEffect()
-                tile([random.randrange(1,12),random.randrange(1,12)])
-                if "Re" in option:
-                    editLayerMask(1)
-                    applyEffect()
-                    editLayerMask(0)
-        if tweet:
+        # ################## #
+        # This is the nugget #
+        # ################## #
+        if type == "":
+            automations[random.choice(automations.keys())]()
+        else:
+            automations[type]()
+        if options["tweet"]:
             signImage()
-            tweet=imageTitle(2)+'\n by Jared Haer\n'+study_name+'\n'
+            tweet=imageTitle(2)+'\n by Jared Haer\n'+options["study_name"]+'\n'
             tweetImage(tweet+hashtagString(len(tweet)),qX()[1])
             closeAll()
             sleep(delay)
         else:
             qX()
             closeAll()
-
 
 def doWeatherPainting():
     # draw day

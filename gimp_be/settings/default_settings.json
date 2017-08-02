@@ -9,7 +9,7 @@
   },
   "path": {
     "default_save_path": "YOUR DEFAULT SAVE PATH",
-    "resource_folder": "YOUR RESOURCE FOLDER"
+    "art_folder": "YOUR RESOURCE FOLDER"
   },
   "network": {
     "host_name": "YOUR COMPUTER NAME"

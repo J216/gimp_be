@@ -3,20 +3,14 @@ from gimp_be.utils.string_tools import *
 
 
 def imageSetup(w=0, h=0,file_name=""):
+    #Create new image from height and width
     global settings_data
     if file_name == "":
-        file_name='script-draw.png'
+        file_name='art.png'
     if w == 0:
         w=int(settings_data['image']['width'])
     if h == 0:
         h=int(settings_data['image']['height'])
-    """
-    #Create new image from height and width
-    :param w:
-    :param h:
-    :return:
-    """
-    global settings_data
     settings_data['image']['title'] = imageTitle(2)
     image = gimp.Image(w, h, RGB)
     gridSpacing = max(image.width, image.height) / 12
@@ -33,12 +27,9 @@ def imageSetup(w=0, h=0,file_name=""):
     pdb.gimp_context_set_background((255, 255, 255))
     gimp.Display(image)
 
-
 # update active image sets global var to current draw area, can't set image to active as of now...
 def updateImage():
     pdb.gimp_displays_flush()
-
-
 
 # Close all - working but just guesses displays
 def closeAll():
