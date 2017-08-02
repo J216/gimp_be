@@ -1,6 +1,8 @@
 from gimp_be.settings.settings import *
 from gimp_be.utils.string_tools import *
 from gimp_be.utils.pip import *
+from gimp_be import settings_data
+
 try:
     import TwitterAPI
 except:
@@ -16,13 +18,11 @@ def setTwitterAPIKeys(ACCESS_TOKEN_KEY="NOT_SET",CONSUMER_KEY="NOT_SET",CONSUMER
         settings_data['twitter']['ACCESS_TOKEN_SECRET']=ACCESS_TOKEN_SECRET
         saveSettings()
 
-
 def addHashtag(tag):
     #add hashtag to settings
     global settings_data
     settings_data['twitter']['hashtags']=settings_data['twitter']['hashtags']+u' #'+unicode(tag, "utf-8")
     saveSettings()
-
 
 def removeHashtag(tag):
     #return string of hashtags filling given character space
@@ -41,7 +41,6 @@ def removeHashtag(tag):
         return True
     else:
         return False
-
 
 def hashtagString(length=140,mode=0):
     #return string of hashtags filling given character space
@@ -71,12 +70,10 @@ def hashtagString(length=140,mode=0):
                 return str(hs).strip()
     return str(hs).strip()
 
-
 def setDefaultTweet(dt='GIMP-Python tweet!'):
     global settings_data
     settings_data['twitter']['default_tweet']=unicode(dt, "utf-8")
     saveSettings()
-
 
 def tweetText(opt=0):
     """
@@ -125,3 +122,4 @@ def tweetImage(message,image_file):
     data = file.read()
     r = api.request('statuses/update_with_media', {'status':message}, {'media[]':data})
     return str(str(r.status_code))
+
