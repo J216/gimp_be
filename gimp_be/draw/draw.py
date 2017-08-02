@@ -1,20 +1,51 @@
 from gimpfu import gimp, pdb, SELECT_CRITERION_COMPOSITE
 import random, math
 from gimp_be.settings.brush_settings import *
+from gimp_be.utils.quick import qL
 from gimp_be.image.layer import editLayerMask
+import numpy as np
 
-
-def drawRays(rays=32, rayLength=100, centerX=50, centerY=75):
+def drawRays(rays=32, rayLength=100, centerX=0, centerY=0):
     """"
     draw N rays from center in active drawable with current brush
     """
     image = gimp.image_list()[0]
     drawable = pdb.gimp_image_active_drawable(image)
-    ray_gap = int(360/rays)
+    if centerX == 0:
+        centerX = image.width/2
+    if centerY == 0:
+        centerY = image.height/2
+    ray_gap = int(360.0/rays)
     for ray in range(0,rays):
         ctrlPoints = centerX, centerY, centerX + rayLength * math.sin(math.radians(ray*ray_gap)), centerY + rayLength * math.cos(math.radians(ray*ray_gap))
         pdb.gimp_paintbrush_default(drawable, len(ctrlPoints), ctrlPoints)
 
+def drawRandomRays(rays=32, length=100, centerX=0, centerY=0,noise=0.3):
+    image = gimp.image_list()[0]
+    drawable = pdb.gimp_image_active_drawable(image)
+    if centerX == 0:
+        centerX = image.width/2
+    if centerY == 0:
+        centerY = image.height/2
+    ray_gap = 360.0/rays
+    for ray in range(0,rays):
+        rayLength=random.choice(range(int(length-length*noise),int(length+length*noise)))
+        print ray
+        random_angle=random.choice(np.arange(0.0,360.0,0.01))
+        ctrlPoints = [ centerX, centerY, centerX + int(rayLength * math.sin(math.radians(random_angle))), int(centerY + rayLength * math.cos(math.radians(random_angle)))]
+        print str(ctrlPoints)+'\n'
+        pdb.gimp_paintbrush_default(drawable, len(ctrlPoints), ctrlPoints)
+
+def spikeBallStack(depth=20,layer_mode=6, flatten=0):
+    for x in range(1,depth):
+        image = gimp.image_list()[0]
+        drawable = pdb.gimp_image_active_drawable(image)
+        qL()
+        pdb.gimp_layer_set_mode(pdb.gimp_image_get_active_layer(image), layer_mode)
+        drawRandomRays(rays=random.choice([32,64,128,4]), length=(image.height/2-image.height/12), centerX=image.width/2, centerY=image.height/2,noise=random.choice([0.3,0.1,0.8]))
+        if flatten:
+            if not x%flatten:
+                pdb.gimp_image_flatten(image)
 
 def randomStrokes(num = 4, opt = 1):
     """
@@ -263,6 +294,16 @@ def drawInkBlot(option=''):
         pdb.gimp_invert(drawable)
         editLayerMask(0)
 
+def inkBlotStack(depth=20,layer_mode=6, flatten=0):
+    for x in range(1,depth):
+        image = gimp.image_list()[0]
+        drawable = pdb.gimp_image_active_drawable(image)
+        qL()
+        pdb.gimp_layer_set_mode(pdb.gimp_image_get_active_layer(image), layer_mode)
+        drawInkBlot()
+        if flatten:
+            if not x%flatten:
+                pdb.gimp_image_flatten(image)
 
 def gridCenters(grid=[]):
     if grid==[]:
