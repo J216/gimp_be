@@ -92,7 +92,7 @@ def drawOddTree(x1=-1, y1=-1, angle=270, depth=9, recursiondepth=0):
 
 
 # draw a tree
-def drawForestTree(x1=-1, y1=-1, angle=270, depth=9, size=10, recursiondepth=0):
+def drawForestTree(x1=-1, y1=-1, angle=270, depth=7, size=10, recursiondepth=0):
     image = gimp.image_list()[0]
     drawable = pdb.gimp_image_active_drawable(image)
     if x1 == -1:
