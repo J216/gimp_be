@@ -1,6 +1,9 @@
-import datetime, os, json, urllib2
-settings_data = {'location':{'city':''}}
-settings_file=''
+import datetime
+import os
+import json
+import urllib2
+from gimp_be import settings_data, settings_file
+
 def loadSettings():
     global settings_data
     global settings_file
@@ -13,21 +16,14 @@ def loadSettings():
     else:
         return (False, {"not_loaded": "1"})
 
-
-settings_data = loadSettings()[1]
-
 def saveSettings():
     global settings_data
     global settings_file
-    if settings_file == '':
-        settings_file=os.path.abspath(__file__)[0:-11] + 'settings.json'
-    settings_file=os.path.abspath(__file__)[0:-11] + 'settings.json'
     with open(settings_file, 'w') as json_data_file:
         json.dump(settings_data,json_data_file)
         return (True, settings_data)
     print 'Save settings failed.'
-    return (False, {"not_loaded": "1"})
-
+    return (False, {"not_saved": "1"})
 
 def loadDefaultSettings():
     global settings_data
@@ -38,7 +34,6 @@ def loadDefaultSettings():
         return (True, settings_data)
     else:
         return (False,{"not_loaded": "1"})
-
 
 def getLocationData():
     loc_data = ()
@@ -59,7 +54,6 @@ def getLocationData():
     except:
         loc_data = ('0', '0', '0', '0', '0', '0')
     return loc_data
-
 
 def updateLocationData(save=1, print_conditions=1):
     now = datetime.datetime.now()
@@ -83,14 +77,11 @@ def updateLocationData(save=1, print_conditions=1):
     else:
         return False
 
-
 def calcW(height=1080, aspect=[16,9]):
     return (height/aspect[1])*aspect[0]
 
-
 def calcH(width=1920, aspect=[16,9]):
      return (width/aspect[0])*aspect[1]
-
 
 def setImageSize(dim=[512,512]):
     global settings_data
@@ -99,7 +90,6 @@ def setImageSize(dim=[512,512]):
     settings_data['image']['x_center'] = str(dim[0]/2)
     settings_data['image']['y_center'] = str(dim[1]/2)
     saveSettings()
-
 
 def setImageTitle(new_title=""):
     global settings_data
@@ -112,13 +102,11 @@ def setExportFileType(ef="png"):
     settings_data['image']['export_file_type']=ef
     saveSettings()
 
-
 def setExportName(en=""):
     global settings_data
     if not en == "":
         settings_data['path']['export_name']=en
         saveSettings()
-
 
 def setDefaultSavePath(ds=""):
     global settings_data
@@ -126,19 +114,16 @@ def setDefaultSavePath(ds=""):
         settings_data['path']['default_save_path']=ds
         saveSettings()
 
-
 def setArtFolder(af=""):
     global settings_data
     if not af == "":
         settings_data['path']['art_folder']=ds
         saveSettings()
 
-
 def setAuthor(name='GIMP Artist'):
     global settings_data
     settings_data['user']['author'] = name
     saveSettings()
-
 
 def setDeveloperMode(mode="False"):
     global settings_data
