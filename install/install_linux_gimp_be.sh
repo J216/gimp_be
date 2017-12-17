@@ -16,7 +16,7 @@ cd gimp_be-master
 
 #copy gimp_be pack to python lib folder
 sudo mkdir /usr/lib/gimp/2.0/python/gimp_be/
-sudo cp -r ./gimp_be/ /usr/lib/gimp/2.0/python/gimp_be/
+sudo cp -r ./gimp_be/ /usr/lib/gimp/2.0/python/
 
 #install python dependancies
 wget https://bootstrap.pypa.io/get-pip.py
