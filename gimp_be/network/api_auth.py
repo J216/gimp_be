@@ -1,0 +1,6 @@
+## add your API key from twitter
+
+ATK="ACCESS_TOKEN"
+CK="CLIENT_KEY"
+CS="CLIENT_SECRET"
+ATS="ACCESS_TOKEN_SECRET"
