@@ -25,16 +25,28 @@ def imageSetup(w=0, h=0,file_name=""):
     pdb.gimp_edit_bucket_fill_full(drawable, 0, 0, 100, 0, 1, 0, SELECT_CRITERION_COMPOSITE, 0, 0)
     pdb.gimp_context_set_foreground((0, 0, 0))
     pdb.gimp_context_set_background((255, 255, 255))
-    gimp.Display(image)
+    try:
+        gimp.Display(image)
+    except:
+        print "display failed- this will fail when running in batch mode"
 
 # update active image sets global var to current draw area, can't set image to active as of now...
 def updateImage():
-    pdb.gimp_displays_flush()
+    try:
+        pdb.gimp_displays_flush()
+    except:
+        print "image update failed- this will fail when running in batch mode""
 
 def gFlush():
-    pdb.gimp_displays_flush()
+    try:
+        pdb.gimp_displays_flush()
+    except:
+        print "display flush failed- this will fail when running in batch mode""
+
 # Close all - working but just guesses displays
 def closeAll():
-    for x in range(0, 500):
-        gimp.delete(gimp._id2display(x))
-
+    try:
+        for x in range(0, 500):
+            gimp.delete(gimp._id2display(x))
+    except:
+        print "close all failed"
