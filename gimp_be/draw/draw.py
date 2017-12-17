@@ -3,7 +3,29 @@ import random, math
 from gimp_be.settings.brush_settings import *
 from gimp_be.utils.quick import qL
 from gimp_be.image.layer import editLayerMask
+from effects import mirror
 import numpy as np
+import UndrawnTurtle as turtle
+
+def drawLine(points):
+    image = gimp.image_list()[0]
+    drawable = pdb.gimp_image_active_drawable(image)
+    pdb.gimp_paintbrush_default(drawable, len(points), points)
+
+def drawSpiral(n=140, angle=61, step=10, center=[]):
+    coord=[]
+    nt=turtle.Turtle()
+    if center == []:
+        image = gimp.image_list()[0]
+        center=[image.width/2,image.height/2]
+    for step in range(n):
+        coord.append(int(nt.position()[0]*10)+center[0])
+        coord.append(int(nt.position()[1]*10)+center[1])
+        nt.forward(step)
+        nt.left(angle)
+        coord.append(int(nt.position()[0]*10)+center[0])
+        coord.append(int(nt.position()[1]*10)+center[1])
+    drawLine(coord)
 
 def drawRays(rays=32, rayLength=100, centerX=0, centerY=0):
     """"
@@ -18,7 +40,7 @@ def drawRays(rays=32, rayLength=100, centerX=0, centerY=0):
     ray_gap = int(360.0/rays)
     for ray in range(0,rays):
         ctrlPoints = centerX, centerY, centerX + rayLength * math.sin(math.radians(ray*ray_gap)), centerY + rayLength * math.cos(math.radians(ray*ray_gap))
-        pdb.gimp_paintbrush_default(drawable, len(ctrlPoints), ctrlPoints)
+        drawLine(ctrlPoints)
 
 def drawRandomRays(rays=32, length=100, centerX=0, centerY=0,noise=0.3):
     image = gimp.image_list()[0]
@@ -30,13 +52,11 @@ def drawRandomRays(rays=32, length=100, centerX=0, centerY=0,noise=0.3):
     ray_gap = 360.0/rays
     for ray in range(0,rays):
         rayLength=random.choice(range(int(length-length*noise),int(length+length*noise)))
-        print ray
         random_angle=random.choice(np.arange(0.0,360.0,0.01))
         ctrlPoints = [ centerX, centerY, centerX + int(rayLength * math.sin(math.radians(random_angle))), int(centerY + rayLength * math.cos(math.radians(random_angle)))]
-        print str(ctrlPoints)+'\n'
-        pdb.gimp_paintbrush_default(drawable, len(ctrlPoints), ctrlPoints)
+        drawLine(ctrlPoints)
 
-def spikeBallStack(depth=20,layer_mode=6, flatten=0):
+def spikeBallStack(depth=20, layer_mode=6, flatten=0):
     for x in range(1,depth):
         image = gimp.image_list()[0]
         drawable = pdb.gimp_image_active_drawable(image)
@@ -57,8 +77,7 @@ def randomStrokes(num = 4, opt = 1):
     for loopNum in range(0, num):
         if opt == 1:
             brushSize(35)
-        ctrlPoints = [r(-200, image.width+200), r(-200, image.height+200),r(-200, image.width+200),r(-200, image.height+200)]
-        pdb.gimp_paintbrush_default(drawable, len(ctrlPoints), ctrlPoints)
+        drawLine(ctrlPoints)
 
 
 # draw random color bars, opt 3 uses random blend
@@ -94,7 +113,6 @@ def drawCNT():
 # draw sine wave
 def drawSinWave(bar_space=32, bar_length=-1, mag=70, x_offset=-1, y_offset=-1):
     image = gimp.image_list()[0]
-    drawable = pdb.gimp_image_active_drawable(image)
     if y_offset == -1:
         y_offset = image.height/2
     if x_offset == -1:
@@ -107,20 +125,19 @@ def drawSinWave(bar_space=32, bar_length=-1, mag=70, x_offset=-1, y_offset=-1):
         x = cStep * bar_space + x_offset
         y = int(round(math.sin(x) * mag) + y_offset)
         ctrlPoints = x, int(y - round(bar_length / 2)), x, int(y + round(bar_length / 2))
-        pdb.gimp_paintbrush_default(drawable, len(ctrlPoints), ctrlPoints)
+        drawLine(ctrlPoints)
 
 
 # draw sine wave
 def drawSinWaveDouble(barSpace, barLen, mag):
     image = gimp.image_list()[0]
-    drawable = pdb.gimp_image_active_drawable(image)
     steps =image.width/ barSpace
     x = 0
     for cStep in range(1, steps):
         x = cStep * barSpace
         y = int(abs(round(math.sin(x) * mag + image.height / 2)))
         ctrlPoints = x, int(y - round(barLen / 2)), x, int(y + round(barLen / 2))
-        pdb.gimp_paintbrush_default(drawable, len(ctrlPoints), ctrlPoints)
+        drawLine(ctrlPoints)
 
 
 # draw a single brush point
@@ -128,33 +145,15 @@ def drawBrush(x1, y1):
     image = gimp.image_list()[0]
     drawable = pdb.gimp_image_active_drawable(image)
     ctrlPoints = (x1, y1, x1, y1)
-    pdb.gimp_paintbrush_default(drawable, len(ctrlPoints), ctrlPoints)
-    return ctrlPoints
+    drawLine(ctrlPoints)
 
 
 # draw multiple brush points
-def drawMultiBrush(brush_strokes, options):
+def drawMultiBrush(brush_strokes=24):
     image = gimp.image_list()[0]
-    drawable = pdb.gimp_image_active_drawable(image)
-    grid_width =image.width/ int(math.sqrt(brush_strokes))
-    grid_height = image.height / int(math.sqrt(brush_strokes))
-    brush_size = pdb.gimp_context_get_brush_size()
-    option_list = {'Opacity': 0, 'Size': 0, 'Color': 0, 'Brush': 0, 'Pattern': 0}
-    coord_set = (0, 0)
-    # option_list = (0,0,0,0)
-    if "randopgr" in options:
-        option_list['Opacity'] = 1
-    elif "randopind" in options:
-        option_list['Opacity'] = 2
-    if "randsizegr" in options:
-        option_list['Size'] = 1
-    elif "randsizeind" in options:
-        option_list['Size'] = 2
-    if "randcolgr" in options:
-        option_list['Color'] = 1
-    elif "randcolind" in options:
-        option_list['Color'] = 2
-    coord_x = 0
+    grid_width=image.width/int(math.sqrt(brush_strokes))
+    grid_height=image.height/int(math.sqrt(brush_strokes))
+    coord_x=0
     coord_y = 0
     for i in range(0, int(math.sqrt(brush_strokes))):
         coord_x = coord_x + grid_width
@@ -194,8 +193,9 @@ def randomCircleFill(num=20, size=100, opt=3, sq=1):
     pdb.gimp_selection_none(image)
 
 
-# draws square, opt  does random color
+
 def randomRectFill(num=20, size=100, opt=3, sq=0):
+    # draws square, opt  does random color
     image = gimp.image_list()[0]
     drawable = pdb.gimp_image_active_drawable(image)
     selectMode = 2
@@ -217,8 +217,8 @@ def randomRectFill(num=20, size=100, opt=3, sq=0):
     pdb.gimp_selection_none(image)
 
 
-# Random Blend tool test
 def randomBlend():
+    # Random Blend tool test
     blend_mode = 0
     paint_mode = 0
     gradient_type = random.randrange(0, 10)
@@ -238,11 +238,7 @@ def randomBlend():
     y1 = random.randrange(0, image.height)
     x2 = random.randrange(0,image.width)
     y2 = random.randrange(0, image.height)
-    settings = (
-    drawable, blend_mode, paint_mode, gradient_type, opacity, offset, repeat, reverse, supersample, max_depth,
-    threshold, dither, x1, y1, x2, y2)
-    pdb.gimp_blend(drawable, blend_mode, paint_mode, gradient_type, opacity, offset, repeat, reverse, supersample,
-                   max_depth, threshold, dither, x1, y1, x2, y2)
+    pdb.gimp_blend(drawable, blend_mode, paint_mode, gradient_type, opacity, offset, repeat, reverse, supersample, max_depth, threshold, dither, x1, y1, x2, y2)
 
 
 def randomPoints(num=12):
@@ -281,20 +277,14 @@ def drawInkBlot(option=''):
     brushSize()
     strokes=[random.randrange(0,image.width/2),random.randrange(0,image.height),random.randrange(0,image.width/2),random.randrange(0,image.height)]
     pdb.gimp_smudge(drawable, random.choice([1,5,10,50,100]), len(strokes), strokes)
-    pdb.gimp_image_select_rectangle(image, 0, 0, 0, image.width/2, image.height)
-    non_empty = pdb.gimp_edit_copy(drawable)
-    pdb.gimp_edit_paste(drawable, 1)
-    floating_sel = pdb.gimp_image_floating_selection(image)
-    pdb.gimp_item_transform_flip_simple(floating_sel, 0, 1, image.height/2)
-    floating_sel = pdb.gimp_image_floating_selection(image)
-    pdb.gimp_layer_translate(floating_sel, image.width/2, 0)
-    pdb.gimp_floating_sel_anchor(floating_sel)
+    mirror('h')
     if 'trippy' in option and random.choice([0,1]):
         drawable = pdb.gimp_image_active_drawable(image)
         pdb.gimp_invert(drawable)
         editLayerMask(0)
 
-def inkBlotStack(depth=20,layer_mode=6, flatten=0):
+
+def inkBlotStack(depth=16,layer_mode=6, flatten=0):
     for x in range(1,depth):
         image = gimp.image_list()[0]
         drawable = pdb.gimp_image_active_drawable(image)
@@ -303,7 +293,8 @@ def inkBlotStack(depth=20,layer_mode=6, flatten=0):
         drawInkBlot()
         if flatten:
             if not x%flatten:
-                pdb.gimp_image_flatten(image)
+                flatten()
+
 
 def gridCenters(grid=[]):
     if grid==[]:
@@ -386,7 +377,7 @@ def drawAkuTree(branches=6,tree_height=0, position=0):
     print 'tree_height: ' + str(tree_height)
     print 'trunk size: ' + str(trunk_size)
     brushSize(trunk_size)
-    pdb.gimp_paintbrush_default(drawable, len(trunk), trunk)
+    drawLine(trunk)
     for node in range(branches):
         node_base=[position[0],position[1]-((node*tree_height+1)/branches+tree_height/25+randrange(-1*tree_height/12,tree_height/12))]
         base_length=tree_height/25
@@ -394,15 +385,15 @@ def drawAkuTree(branches=6,tree_height=0, position=0):
         if node%2==0:
             node_end=[node_base[0]+base_length/2,node_base[1]-base_length/2]
             brushSize(2*trunk_size/3)
-            pdb.gimp_paintbrush_default(drawable, 4, [node_base[0],node_base[1],node_end[0],node_end[1]])
+            drawLine([node_base[0],node_base[1],node_end[0],node_end[1]])
             brushSize(trunk_size/3)
-            pdb.gimp_paintbrush_default(drawable, 4, [node_end[0],node_end[1],node_end[0],node_end[1]-tree_height/12-(tree_height/48)])
+            drawLine([node_end[0],node_end[1],node_end[0],node_end[1]-tree_height/12-(tree_height/48)])
         else:
             node_end=[node_base[0]-base_length/2,node_base[1]-base_length/2]
             brushSize(2*trunk_size/3)
-            pdb.gimp_paintbrush_default(drawable, 4, [node_base[0],node_base[1],node_end[0],node_end[1]])
+            drawLine([node_base[0],node_base[1],node_end[0],node_end[1]])
             brushSize(trunk_size/3)
-            pdb.gimp_paintbrush_default(drawable, 4, [node_end[0],node_end[1],node_end[0],node_end[1]-(tree_height/12)])
+            drawLine([node_end[0],node_end[1],node_end[0],node_end[1]-(tree_height/12)])
 
 
 def drawAkuForest(num=25):
