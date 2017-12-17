@@ -35,13 +35,13 @@ def updateImage():
     try:
         pdb.gimp_displays_flush()
     except:
-        print "image update failed- this will fail when running in batch mode""
+        print "image update failed- this will fail when running in batch mode"
 
 def gFlush():
     try:
         pdb.gimp_displays_flush()
     except:
-        print "display flush failed- this will fail when running in batch mode""
+        print "display flush failed- this will fail when running in batch mode"
 
 # Close all - working but just guesses displays
 def closeAll():
