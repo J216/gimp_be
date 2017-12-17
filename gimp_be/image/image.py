@@ -31,6 +31,8 @@ def imageSetup(w=0, h=0,file_name=""):
 def updateImage():
     pdb.gimp_displays_flush()
 
+def gFlush():
+    pdb.gimp_displays_flush()
 # Close all - working but just guesses displays
 def closeAll():
     for x in range(0, 500):
