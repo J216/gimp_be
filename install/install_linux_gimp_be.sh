@@ -2,6 +2,7 @@
 
 #change workind directory to home folder 
 cd $HOME
+mkdir scripts
 
 #install needed packages
 sudo apt update
@@ -12,6 +13,10 @@ sudo apt install exiftool
 #download and unzip gimp_be
 wget https://github.com/J216/gimp_be/archive/master.zip
 unzip master.zip
+cp ./gimp_be-master/run_linux_batchmode.sh ./scripts/gimp_be.sh
+sudo chmod +x ./scripts/gimp_be.sh
+cp ./gimp_be-master/install/update_linux_gimp_be.sh ./scripts/gimp_be_update.sh
+sudo chmod +x ./scripts/gimp_be_update.sh
 cd gimp_be-master
 
 #copy gimp_be pack to python lib folder
