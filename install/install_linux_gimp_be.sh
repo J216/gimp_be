@@ -9,10 +9,6 @@ supo apt install gimp
 sudo apt install unzip
 sudo apt install exiftool
 
-#create working directory
-mkdir gimp_be
-cd gimp_be
-
 #download and unzip gimp_be
 wget https://github.com/J216/gimp_be/archive/master.zip
 unzip master.zip
@@ -28,5 +24,5 @@ sudo /usr/bin/python2.7 ./get-pip.py
 sudo /usr/bin/python2.7 -m pip install TwitterAPI
 
 #delete install files
-cd ../../
-rm -r ./gimp_be/
+cd ..
+rm -r ./gimp_be-master/
