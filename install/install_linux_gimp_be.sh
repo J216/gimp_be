@@ -1,4 +1,4 @@
-##
+## Linux installer for gimp_be for linux, test on debian
 
 #change workind directory to home folder 
 cd $HOME
