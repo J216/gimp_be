@@ -13,12 +13,13 @@ from random import randrange
 def paint():
     # Full auto painting
     global settings_data
-    width = int(settings_data['image']['width'])
-    height = int(settings_data['image']['height'])
+    image = gimp.image_list()[0]
+    height = image.height
+    width = image.width
     x_center = width/2
     y_center = height/2
-    qS()
-    image = gimp.image_list()[0]
+    image.height
+    image.width
     randomBlend()
     loop_range = range(0, random.choice((3, 4, 5, 6)))
     loop_range.reverse()
@@ -56,7 +57,6 @@ def paint():
                             'Y': random.choice((height / 4, height / 3, height / 2))}
             drawRays(drawRays_par['Number'], drawRays_par['Length'], drawRays_par['X'], drawRays_par['Y'])
         editLayerMask(0)
-        qX()
         # 2. add layer
         layer_add_par = {'opacity': random.randrange(70, 100), 'msk': 1}
         addNewLayer(**layer_add_par)
@@ -176,7 +176,7 @@ def paint():
                     'num': random.choice((1, 1, 1, 1, 1, 1, 1, 1, 2, 3, 3, 3, 3, 4, 5, 8, 9, 12, 24, 64, 128, 512)),
                     'size': random.randrange(15, height), 'opt': 3, 'sq': random.choice((0, 1))}
                 randomRectFill(**fill_par)
-        flatten(image)
+        flatten()
     image = gimp.image_list()[0]
     drawable = pdb.gimp_image_active_drawable(image)
     canvas_par = {'Image': image, 'Draw': drawable, 'Direction': 1, 'Depth': 1}
@@ -188,6 +188,9 @@ def dimensionality(folder='',tweet=0):
     if folder == '':
         folder = settings_data['path']['art_folder']+"resources/"+random.choice(["photos","fractals","plants","rock"])+"/"
     loadDirLayer(folder,9699690)
+    if random.choice([0,0,0,0,1,1,1]):
+        flatten()
+        mirror()
 
 def fractalMasking():
     # fractal layered wtih tile masks
@@ -198,6 +201,9 @@ def fractalMasking():
     for x in range(random.choice([3,6,7,8,9,10])):
         addFractal()
         tile([random.choice([1,2,3,4,5,6,7,8,12]),random.choice([1,2,3,4,5,6,7,8,12])])
+    if random.choice([0,0,0,0,1,1,1]):
+        flatten()
+        mirror()
 
 def randomMasking():
     # tile mask from random resources
@@ -211,6 +217,9 @@ def randomMasking():
         pdb.gimp_layer_set_mode(layer_mode_par['layer'], layer_mode_par['mode'])
         if 25 > random.randrange(0,100):
             tile([random.randrange(1,12),random.randrange(1,12)])
+    if random.choice([0,0,0,0,1,1,1]):
+        flatten()
+        mirror()
 
 def hybridMasking(option="SpBGsp", noise=0.3):
     # masking resources with lots of options
@@ -256,19 +265,27 @@ def hybridMasking(option="SpBGsp", noise=0.3):
                 editLayerMask(1)
                 applyEffect()
                 editLayerMask(0)
+    if random.choice([0,0,0,0,1,1,1]):
+        flatten()
+        mirror()
 
 def spikeDif():
     # draw spike ball or random rays
-    spikeBallStack(depth=20)
-    if random.choice([0,0,0,0,0,1,1,1,1]):
-        applyEffect()
+    spikeBallStack(depth=random.choice([3,3,4,5,6,8,10,12,16,20]))
+    applyEffect()
+    if random.choice([0,0,0,0,1,1,1]):
+        flatten()
+        mirror()
 
 def inkBlot():
     # draq basic ink blot
     inkBlotStack()
     applyEffect()
+    if random.choice([0,0,0,0,1,1,1]):
+        flatten()
+        mirror()
 
-def skeleton(type="",num=10,delay=10,options={"tweet":1, "study_name":"Multifunctional Study"}):
+def skeleton(type="",num=10,delay=10,tweet=1,study_name="Multifunctional Study"):
     # function to take care of exporting and tweet all images produces
     automations = {"spikeDif" : spikeDif,
                     "inkBlot" : inkBlot,
@@ -285,9 +302,10 @@ def skeleton(type="",num=10,delay=10,options={"tweet":1, "study_name":"Multifunc
             automations[random.choice(automations.keys())]()
         else:
             automations[type]()
-        if options["tweet"]:
+        if tweet:
             signImage()
-            tweet=imageTitle(2)+'\n by Jared Haer\n'+options["study_name"]+'\n'
+            flatten()
+            tweet=imageTitle(2)+'\n by Jared Haer\n'+study_name+'\n'
             tweetImage(tweet+hashtagString(len(tweet)),qX()[1])
             closeAll()
             sleep(delay)
