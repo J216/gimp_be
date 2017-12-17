@@ -1,0 +1,1 @@
+gimp -idf --batch-interpreter python-fu-eval -b 'import sys; sys.path=["."]+sys.path;pdb.gimp_dynamics_refresh(); num_dynamics, dynamics_list = pdb.gimp_dynamics_get_list(""); import gimp_be; gimp_be.skeleton();' -b 'pdb.gimp_quit(1)'
