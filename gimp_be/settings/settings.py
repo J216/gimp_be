@@ -8,7 +8,11 @@ def loadSettings():
     global settings_data
     global settings_file
     if settings_file == '':
-        settings_file=os.path.abspath(__file__)[0:-11] + 'settings.json'
+        settings_file=os.path.abspath(__file__)
+        if ".pyc" in settings_file:
+            settings_file=settings_file.replace('.pyc','.json')
+        if ".py" in settings_file:
+            settings_file=settings_file.replace('.py','.json')
     if os.path.isfile(settings_file):
         with open(settings_file) as json_data_file:
             settings_data = json.load(json_data_file)
