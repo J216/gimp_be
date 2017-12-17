@@ -5,6 +5,7 @@ cd $HOME
 
 #install needed packages
 sudo apt update
+supo apt install gimp
 sudo apt install unzip
 sudo apt install exiftool
 
