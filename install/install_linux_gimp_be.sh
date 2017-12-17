@@ -28,5 +28,5 @@ sudo /usr/bin/python2.7 ./get-pip.py
 sudo /usr/bin/python2.7 -m pip install TwitterAPI
 
 #delete install files
-cd ..
+cd ../../
 rm -r ./gimp_be/
