@@ -133,12 +133,8 @@ def layerScaleAll():
         pdb.gimp_layer_scale(l, image.width, image.height, 0)
 
 
-def flatten(image):
-    """
-    flatten image
-    :param image:
-    :return:
-    """
+def flatten():
+    # flatten image
     image = gimp.image_list()[0]
     pdb.gimp_image_flatten(image)
 
