@@ -1,1 +1,27 @@
 
+{
+  "network": {"host_name": "You_Computer_Name"}, 
+  "twitter": {"hashtags": "#GIMP #Python #digitalart", 
+              "default_tweet": "Created with #GIMP and #Python by Jared Haer", 
+              "CONSUMER_SECRET": "YOUR_API_KEY", 
+              "ACCESS_TOKEN_SECRET": "YOUR_API_KEY", 
+              "ACCESS_TOKEN_KEY": "YOUR_API_KEY", 
+              "CONSUMER_KEY": "YOUR_API_KEY"}, 
+  "location": {"city": "Greenburg", 
+               "state": "AL", 
+               "country": "USA",
+               "latitude": "32.1534",
+               "longitude": "-91.2631", 
+               "tempf": "38", 
+               "weather": "Fair"}, 
+  "path": {"art_folder": "C:/Where/the/art/folder/is/located/", 
+           "default_save_path": "C:/where/to/save/your/images/", 
+           "export_name": "", 
+           "export_file_name": "C:/Users/Kodkod/Google Drive/art/script_drawing/art.png"}, 
+  "image": {"license": "Creative Commons Attribution-Noncommercial-Share Alike 3.0 License", 
+            "title": "miniseries murmurish", 
+            "export_mode": "qXJ", 
+            "height": "1080", 
+            "width": "1920"}, 
+  "user": {"author": "Your Name"}
+}
