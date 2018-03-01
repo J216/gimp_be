@@ -20,7 +20,7 @@
           "export_file_name": "<EXPORT_FILE_NAME>"}, 
  "image": {"title": "histoplasmin monodelphic", 
            "height": "1080", 
-           "width": "1920"
+           "width": "1920",
            "license": "<LICENSE>"}, 
  "user": {"author": "<AUTHOR>"}
 }
