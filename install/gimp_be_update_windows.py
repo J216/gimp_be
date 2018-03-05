@@ -4,8 +4,9 @@ import zipfile
 import shutil
 from subprocess import call
 from sys import executable as e
-
-
+###########
+## TEST  ##
+###########
 
 gimp_be_download = "https://github.com/J216/gimp_be/archive/master.zip"
 
