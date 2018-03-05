@@ -34,15 +34,15 @@ if os.path.isfile("./gimp_be-master.zip"):
 os.remove("./gimp_be-master.zip")
 if os.path.isdir("./gimp_be-master/gimp_be"):
     # copy settings
-    os.rename("./Lib/site-packages/gimp_be/settings/settings.json", "./settings.json")
+    os.rename("./Lib/site-packages/gimp_be/settings/settings.ini", "./settings.ini")
     # remove older version
     shutil.rmtree("./Lib/site-packages/gimp_be", ignore_errors=False, onerror=None)
     # copy new version
     os.rename("./gimp_be-master/gimp_be", "./Lib/site-packages/gimp_be")
     # restore settings.json
-    os.rename("./settings.json","./Lib/site-packages/gimp_be/settings/settings.json")
+    os.rename("./settings.ini","./Lib/site-packages/gimp_be/settings/settings.ini")
     # update update script
-    os .remove("./Scripts/gimp_be_update_windows.py")
-    os.rename("./gimp_be-master/install/gimp_be_update_windows.py", "./Scripts/gimp_be_update_windows.py")
+    os .remove("./Scripts/gimp_be_update.py")
+    os.rename("./gimp_be-master/install/gimp_be_update_windows.py", "./Scripts/gimp_be_update.py")
     # clean up
     shutil.rmtree("./gimp_be-master", ignore_errors=False, onerror=None)
