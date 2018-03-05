@@ -2,42 +2,32 @@ import datetime
 import os
 import json
 import urllib2
+from ConfigParser import ConfigParser
 from gimp_be import settings_data, settings_file
+import inspect
 
-def loadSettings():
-    global settings_data
-    global settings_file
-    if settings_file == '':
-        settings_file=os.path.abspath(__file__)
-        if ".pyc" in settings_file:
-            settings_file=settings_file.replace('.pyc','.json')
-        if ".py" in settings_file:
-            settings_file=settings_file.replace('.py','.json')
-    if os.path.isfile(settings_file):
-        with open(settings_file) as json_data_file:
-            settings_data = json.load(json_data_file)
-        return (True, settings_data)
-    else:
-        return (False, {"not_loaded": "1"})
+configfile_name = "settings.ini"
+config = ConfigParser()
+os.chdir(os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe()))))
+config.read(configfile_name)
+settings_data=config._sections
+
 
 def saveSettings():
     global settings_data
-    global settings_file
-    with open(settings_file, 'w') as json_data_file:
-        json.dump(settings_data,json_data_file)
-        return (True, settings_data)
-    print 'Save settings failed.'
-    return (False, {"not_saved": "1"})
+    # Check if there is already a configurtion file
+    if not os.path.isfile(configfile_name):
+        # Create the configuration file as it doesn't exist yet
+        cfgfile = open(configfile_name, 'w')
+        config._sections=settings_data
+        Config.write(cfgfile)
+        cfgfile.close()
 
 def loadDefaultSettings():
     global settings_data
-    default_settings_file=os.path.abspath(__file__)[0:-11] + 'default_settings.json'
-    if os.path.isfile(settings_file):
-        with open(default_settings_file) as json_data_file:
-            settings_data = json.load(json_data_file)
-        return (True, settings_data)
-    else:
-        return (False,{"not_loaded": "1"})
+    os.chdir(os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe()))))
+    config.read("default_"+configfile_name)
+    settings_data=config._sections
 
 def getLocationData():
     loc_data = ()
