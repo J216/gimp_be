@@ -43,7 +43,7 @@ if os.path.isdir("./gimp_be-master/gimp_be"):
     # restore settings.json
     os.rename("./settings.json","./Lib/site-packages/gimp_be/settings/settings.json")
     # update update script
-    os .remove
+    os .remove("./Scripts/gimp_be_update_windows.py")
     os.rename("./gimp_be-master/install/gimp_be_update_windows.py", "./Scripts/gimp_be_update_windows.py")
     # clean up
     shutil.rmtree("./gimp_be-master", ignore_errors=False, onerror=None)
