@@ -2,11 +2,14 @@
 
 def qRC(opt='0',ftp_home="." ):
     if opt =='0':
-        global session
-        session = ftplib.FTP('<IP-HERE>','<USERNAME-HERE','<PW_HERE>')
-        if not ftp_home == ".":
-            session.cwd(ftp_home)
-    print 'FTP Connected'
+        try:
+            global session
+            session = ftplib.FTP('<IP-HERE>','<USERNAME-HERE','<PW_HERE>')
+            if not ftp_home == ".":
+                session.cwd(ftp_home)
+            print 'FTP Connected'
+        except:
+            print 'FTP Failed'
     return session
 
 
