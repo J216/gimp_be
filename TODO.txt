@@ -1,16 +1,32 @@
 ##Project todo list##
-# creat function initialSettings() to deal with first run, setting; default save path, hostname, author name
-# develop method for applying text
-# create automatic setup for twitter keys and tokens
-# create devaintArt submission function (submit==>sta.sh==>publish==>DeviantArt) Use direct API call with or without wrapper?
-# check load image dir fuction, seems to be loading one at a time
-# Work with digital artists to create a system that supports their process
-# use 12 column layout
+# Installers
+# -Windows
+# -Linux
+# -Mac
+
+# Update scripts
+# -Windows
+# -Linux
+# -Mac
 # construct project management features
-# create gui for project management features
-# develop grunge painting basic functions
-# -get some
-# implement doPainting('help') help info display
+
+# GUI and plug-ins
+# -Set API Keys
+# -Settings window 
+
+# Use ini file instead of json to store settings
+
+# Functions to work on
 # fix drawSinWave() it is not drawing correct form
+# use 12 column layout
+
+# New Functions
+# creat function initialSettings() to deal with first run, setting; default save path, hostname, author name
+# create automatic setup for twitter keys and tokens
 # create furry circles
-# create Quality Control game
+# create Quality Control fullscreen viewer of images with exiftool call to tag and adjust rating
+# develop grunge painting basic functions
+# create devaintArt submission function (submit==>sta.sh==>publish==>DeviantArt) Use direct API call with or without wrapper?
+# -may not be possible without browser automation, if so must be implimented as a complimentary webservice
+
+# Work with digital artists to create a system that supports their process
