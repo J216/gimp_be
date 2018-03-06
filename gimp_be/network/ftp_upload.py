@@ -3,7 +3,7 @@
 def qRC(opt='0',ftp_home="." ):
     if opt =='0':
         global session
-        session = ftplib.FTP('192.168.0.121','dave','DaveTroB4E')
+        session = ftplib.FTP('<IP-HERE>','<USERNAME-HERE','<PW_HERE>')
         if not ftp_home == ".":
             session.cwd(ftp_home)
     print 'FTP Connected'
