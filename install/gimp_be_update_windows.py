@@ -12,7 +12,6 @@ dependancies = ["runtime", "wget", "numpy", "TwitterAPI"]
 
 py_exec = e.replace('pythonw','python')
 py_path = e[:e.rfind("\\")+1].replace("\\","/")
-py_lib = py_path+"\\Lib"
 
 os.chdir(py_path)
 
