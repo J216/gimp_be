@@ -10,7 +10,7 @@ gimp_be_download = "https://github.com/J216/gimp_be/archive/master.zip"
 
 dependancies = ["runtime", "wget", "numpy", "TwitterAPI"]
 
-py_exec = executable.replace('pythonw','python')
+py_exec = e.replace('pythonw','python')
 py_path = e[:e.rfind("\\")+1].replace("\\","/")
 py_lib = py_path+"\\Lib"
 
