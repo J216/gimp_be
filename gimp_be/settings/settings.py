@@ -1,12 +1,12 @@
 import datetime
 import os
-import json
 import urllib2
 from ConfigParser import ConfigParser
-from gimp_be import settings_data, settings_file
 import inspect
 
-configfile_name = "settings.ini"
+path_settings=os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+
+configfile_name = path_settings+"\\"+"settings.ini"
 config = ConfigParser()
 os.chdir(os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe()))))
 config.read(configfile_name)
