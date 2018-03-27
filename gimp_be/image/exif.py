@@ -2,7 +2,6 @@ import os
 import json
 from time import sleep
 from subprocess import Popen, PIPE
-from gimp_be import settings_data
 from datetime import datetime
 from sys import platform
 
