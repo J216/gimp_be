@@ -37,11 +37,9 @@ if os.path.isdir("./gimp_be-master/gimp_be"):
     # remove older version
     try:
         shutil.rmtree("./Lib/site-packages/gimp_be", ignore_errors=False, onerror=None)
-    except FileNotFoundError:
+    except:
         print("Old copy of gimp_be not found... contining anyways")
         sleep(2)
-    else:
-        break
     # copy new version
     os.rename("./gimp_be-master/gimp_be", "./Lib/site-packages/gimp_be")
     # restore settings.json
@@ -49,11 +47,9 @@ if os.path.isdir("./gimp_be-master/gimp_be"):
     # update update script
     try:
         os .remove("./Scripts/gimp_be_update.py")
-    except FileNotFoundError:
+    except:
         print("Old copy of gimp_be update script not found... contining anyways")
         sleep(2)
-    else:
-        break
     os.rename("./gimp_be-master/install/gimp_be_update_windows.py", "./Scripts/gimp_be_update.py")
     # clean up
     shutil.rmtree("./gimp_be-master", ignore_errors=False, onerror=None)
