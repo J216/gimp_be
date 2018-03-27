@@ -1,5 +1,6 @@
 import urllib2
 import os
+from time import sleep
 import zipfile
 import shutil
 from subprocess import call
