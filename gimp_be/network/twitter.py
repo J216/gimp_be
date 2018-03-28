@@ -1,8 +1,3 @@
-from gimp_be.settings.settings import *
-from gimp_be.utils.string_tools import *
-from gimp_be.utils.pip import *
-from gimp_be import settings_data
-
 try:
     import TwitterAPI
 except:
