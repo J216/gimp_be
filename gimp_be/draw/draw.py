@@ -1,11 +1,68 @@
-from gimpfu import gimp, pdb, SELECT_CRITERION_COMPOSITE
 import random, math
-from gimp_be.settings.brush_settings import *
-from gimp_be.utils.quick import qL
+
+#from gimp_be.utils.quick import qL
 from gimp_be.image.layer import editLayerMask
 from effects import mirror
 import numpy as np
 import UndrawnTurtle as turtle
+
+def brushSize(size=-1):
+    """"
+    Set brush size
+    """
+    image = gimp.image_list()[0]
+    drawable = pdb.gimp_image_active_drawable(image)
+    if size < 1:
+        size = random.randrange(2, ((image.height + image.width) / 8))
+    pdb.gimp_context_set_brush_size(size)
+
+# Set brush opacity
+def brushOpacity(op=-1):
+    if op == -1:
+        op = random.randrange(15, 100)
+    pdb.gimp_brushes_set_opacity(op)
+    return op
+
+# Set random brush color no parameters set random
+def brushColor(r1=-1, g1=-1, b1=-1, r2=-1, g2=-1, b2=-1):
+    if not r1 == -1:
+        pdb.gimp_context_set_foreground((r1, g1, b1))
+    if not r2 == -1:
+        pdb.gimp_context_set_background((r2, g2, b2))
+    elif r1 == -1:
+        r1 = random.randrange(0, 255)
+        g1 = random.randrange(0, 255)
+        b1 = random.randrange(0, 255)
+        r2 = random.randrange(0, 255)
+        g2 = random.randrange(0, 255)
+        b2 = random.randrange(0, 255)
+        pdb.gimp_context_set_foreground((r1, g1, b1))
+        pdb.gimp_context_set_background((r2, g2, b2))
+    return (r1, g1, b1, r2, g2, b2)
+
+#set gray scale color
+def grayColor(gray_color):
+    pdb.gimp_context_set_foreground((gray_color, gray_color, gray_color))
+
+# Set random brush
+def randomBrush():
+    num_brushes, brush_list = pdb.gimp_brushes_get_list('')
+    brush_pick = brush_list[random.randrange(0, len(brush_list))]
+    pdb.gimp_brushes_set_brush(brush_pick)
+    return brush_pick
+
+# Set random brush dynamics
+def randomDynamics():
+    dynamics_pick = random.choice(pdb.gimp_dynamics_get_list('')[1])
+    pdb.gimp_context_set_dynamics(dynamics_pick)
+    return dynamics_pick
+
+def qL():
+    # quick new layer
+    addNewLayer()
+    image = gimp.image_list()[0]
+    drawable = pdb.gimp_image_active_drawable(image)
+    pdb.gimp_edit_fill(drawable, 1)
 
 def drawLine(points):
     image = gimp.image_list()[0]
@@ -79,7 +136,6 @@ def randomStrokes(num = 4, opt = 1):
             brushSize(35)
         drawLine(ctrlPoints)
 
-
 # draw random color bars, opt 3 uses random blend
 def drawBars(barNum=10, opt=3):
     image = gimp.image_list()[0]
@@ -100,7 +156,6 @@ def drawBars(barNum=10, opt=3):
     pdb.gimp_selection_none(image)
     return (barNum, opt, color)
 
-
 # draw carbon nano tube
 def drawCNT():
     image = gimp.image_list()[0]
@@ -108,7 +163,6 @@ def drawCNT():
     drawSinWave(1, 4, image.height * .42, 0, image.height / 2)
     pdb.gimp_paintbrush(drawable, 0, 4, (0, (image.height - 80),image.width, (image.height - 80)), 0, 0)
     pdb.gimp_paintbrush(drawable, 0, 4, (0, 80,image.width, 80), 0, 0)
-
 
 # draw sine wave
 def drawSinWave(bar_space=32, bar_length=-1, mag=70, x_offset=-1, y_offset=-1):
@@ -127,7 +181,6 @@ def drawSinWave(bar_space=32, bar_length=-1, mag=70, x_offset=-1, y_offset=-1):
         ctrlPoints = x, int(y - round(bar_length / 2)), x, int(y + round(bar_length / 2))
         drawLine(ctrlPoints)
 
-
 # draw sine wave
 def drawSinWaveDouble(barSpace, barLen, mag):
     image = gimp.image_list()[0]
@@ -139,14 +192,12 @@ def drawSinWaveDouble(barSpace, barLen, mag):
         ctrlPoints = x, int(y - round(barLen / 2)), x, int(y + round(barLen / 2))
         drawLine(ctrlPoints)
 
-
 # draw a single brush point
 def drawBrush(x1, y1):
     image = gimp.image_list()[0]
     drawable = pdb.gimp_image_active_drawable(image)
     ctrlPoints = (x1, y1, x1, y1)
     drawLine(ctrlPoints)
-
 
 # draw multiple brush points
 def drawMultiBrush(brush_strokes=24):
@@ -162,7 +213,6 @@ def drawMultiBrush(brush_strokes=24):
             drawBrush(coord_x, coord_y)
         coord_y = 0
 
-
 #draw grid of dots, this is for remainder mapping, this incomplete and temp. ####====DONT FORGET
 def dotGrid():
     image = gimp.image_list()[0]
@@ -171,7 +221,6 @@ def dotGrid():
         for x in range(10, image.height-10,20):
             grayColor(abs(i^3-x^3)%256)
             drawBrush(i+10,x+10)
-
 
 # draws random dots, opt  does random color
 def randomCircleFill(num=20, size=100, opt=3, sq=1):
@@ -191,8 +240,6 @@ def randomCircleFill(num=20, size=100, opt=3, sq=1):
         else:
             pdb.gimp_edit_bucket_fill_full(drawable, 0, 0, 100, 0, 1, 0, SELECT_CRITERION_COMPOSITE, 0, 0)
     pdb.gimp_selection_none(image)
-
-
 
 def randomRectFill(num=20, size=100, opt=3, sq=0):
     # draws square, opt  does random color
@@ -215,7 +262,6 @@ def randomRectFill(num=20, size=100, opt=3, sq=0):
         else:
             pdb.gimp_edit_bucket_fill_full(drawable, 0, 0, 100, 0, 1, 0, SELECT_CRITERION_COMPOSITE, 0, 0)
     pdb.gimp_selection_none(image)
-
 
 def randomBlend():
     # Random Blend tool test
@@ -240,14 +286,12 @@ def randomBlend():
     y2 = random.randrange(0, image.height)
     pdb.gimp_blend(drawable, blend_mode, paint_mode, gradient_type, opacity, offset, repeat, reverse, supersample, max_depth, threshold, dither, x1, y1, x2, y2)
 
-
 def randomPoints(num=12):
     d = []
     for x in range(num):
         d.append(choice(range(boarder,image.width-boarder)))
         d.append(choice(range(boarder,image.height-boarder)))
     return d
-
 
 def drawInkBlot(option=''):
     image=gimp.image_list()[0]
@@ -283,7 +327,6 @@ def drawInkBlot(option=''):
         pdb.gimp_invert(drawable)
         editLayerMask(0)
 
-
 def inkBlotStack(depth=16,layer_mode=6, flatten=0):
     for x in range(1,depth):
         image = gimp.image_list()[0]
@@ -294,7 +337,6 @@ def inkBlotStack(depth=16,layer_mode=6, flatten=0):
         if flatten:
             if not x%flatten:
                 flatten()
-
 
 def gridCenters(grid=[]):
     if grid==[]:
@@ -307,7 +349,6 @@ def gridCenters(grid=[]):
         for columb in range(0,grid[1]):
             tile_centers.append([row_width*row+row_width/2,columb_height*columb+columb_height/2])
     return tile_centers
-
 
 def tile(grid=[],option="mibd",irregularity=0.3):
     from random import randrange
@@ -358,7 +399,6 @@ def tile(grid=[],option="mibd",irregularity=0.3):
     if "m" in option:
         editLayerMask(0)
 
-
 def drawAkuTree(branches=6,tree_height=0, position=0):
     from random import choice, randrange
     image = gimp.image_list()[0]
@@ -395,10 +435,212 @@ def drawAkuTree(branches=6,tree_height=0, position=0):
             brushSize(trunk_size/3)
             drawLine([node_end[0],node_end[1],node_end[0],node_end[1]-(tree_height/12)])
 
-
 def drawAkuForest(num=25):
     for x in range(num):
         drawAkuTree()
 
+# draw a tree
+def drawTree(x1=-1, y1=-1, angle=270, depth=9, recursiondepth=0):
+    image = gimp.image_list()[0]
+    drawable = pdb.gimp_image_active_drawable(image)
+    if x1 == -1:
+        x1 = image.width/2
+    if y1 == -1:
+        y1 = image.height/2
+    x2 = x1 + int(math.cos(math.radians(angle)) * depth * 10.0)
+    y2 = y1 + int(math.sin(math.radians(angle)) * depth * 10.0)
+    ctrlPoints = (x1, y1, x2, y2)
+    if recursiondepth <= 2:
+        brushColor(87, 53, 12)
+    elif depth == 1:
+        brushColor(152, 90, 17)
+    elif depth <= 3:
+        brushColor(7, 145, 2)
+    brushSize(depth * 4 + 5)
+    pdb.gimp_paintbrush_default(drawable, len(ctrlPoints), ctrlPoints)
+    if depth > 0:
+        drawTree(x2, y2, angle - 20, depth - 1, recursiondepth + 1)
+        drawTree(x2, y2, angle + 20, depth - 1, recursiondepth + 1)
 
+# draw a tree with 3 branches per node
+def drawTriTree(x1=-1, y1=-1, angle=270, depth=6, recursiondepth=0, size=10):
+    image = gimp.image_list()[0]
+    drawable = pdb.gimp_image_active_drawable(image)
+    if x1 == -1:
+        x1 = image.width/2
+    if y1 == -1:
+        y1 = image.height/2
+    if depth:
+        x2 = x1 + int(math.cos(math.radians(angle)) * depth * size) + random.randrange(-12, 12)
+        y2 = y1 + int(math.sin(math.radians(angle)) * depth * size) + random.randrange(-12, 12)
+        ctrlPoints = (x1, y1, x2, y2)
+        brushSize(depth + int(size/10))
+        brushColor()
+        pdb.gimp_paintbrush_default(drawable, len(ctrlPoints), ctrlPoints)
+        drawTriTree(x2, y2, angle - 30, depth - 1, recursiondepth + 1,size)
+        drawTriTree(x2, y2, angle, depth - 1, recursiondepth + 1,size)
+        drawTriTree(x2, y2, angle + 30, depth - 1, recursiondepth + 1,size)
 
+# draw random color tri-tree
+def drawColorTriTree(x1=-1, y1=-1, angle=270, depth=9, recursiondepth=0):
+    image = gimp.image_list()[0]
+    drawable = pdb.gimp_image_active_drawable(image)
+    if x1 == -1:
+        x1 = image.width/2
+    if y1 == -1:
+        y1 = image.height/2
+    brushSize(depth + 1)
+    if depth:
+        x2 = x1 + int(math.cos(math.radians(angle)) * depth * 10.0) + random.randrange(-12, 12)
+        y2 = y1 + int(math.sin(math.radians(angle)) * depth * 10.0) + random.randrange(-12, 12)
+        ctrlPoints = (x1, y1, x2, y2)
+        pdb.gimp_paintbrush_default(drawable, len(ctrlPoints), ctrlPoints)
+        drawColorTriTree(x2, y2, angle - 20 + random.choice(-10, -5, 0, 5, 10), depth - 1, recursiondepth + 1)
+        drawColorTriTree(x2, y2, angle + random.choice(-10, -5, 0, 5, 10), depth - 1, recursiondepth + 1)
+        drawColorTriTree(x2, y2, angle + 20 + random.choice(-10, -5, 0, 5, 10), depth - 1, recursiondepth + 1)
+
+# draw a tree
+def drawOddTree(x1=-1, y1=-1, angle=270, depth=9, recursiondepth=0):
+    image = gimp.image_list()[0]
+    drawable = pdb.gimp_image_active_drawable(image)
+    if x1 == -1:
+        x1 = image.width/2
+    if y1 == -1:
+        y1 = image.height/2
+    brushSize((depth * 8 + 30))
+    if depth:
+        x2 = x1 + int(math.cos(math.radians(angle)) * depth * 10.0)
+        y2 = y1 + int(math.sin(math.radians(angle)) * depth * 10.0)
+        ctrlPoints = (x1, y1, x2, y2)
+        pdb.gimp_paintbrush_default(drawable, len(ctrlPoints), ctrlPoints)
+        if not random.randrange(0, 23) == 23:
+            drawTree(x2, y2, angle - 20, depth - 1, recursiondepth + 1)
+            if depth % 2 == 0:
+                drawTree(x2, y2, angle + 20, depth - 1, recursiondepth + 1)
+            if (depth + 1) % 4 == 0:
+                drawTree(x2, y2, angle + 20, depth - 1, recursiondepth + 1)
+            if depth == 5:
+                drawTree(x2, y2, angle - 45, depth - 1, recursiondepth + 1)
+                drawTree(x2, y2, angle + 45, depth - 1, recursiondepth + 1)
+
+# draw a tree
+def drawForestTree(x1=-1, y1=-1, angle=270, depth=7, size=10, recursiondepth=0):
+    image = gimp.image_list()[0]
+    drawable = pdb.gimp_image_active_drawable(image)
+    if x1 == -1:
+        x1 = image.width/2
+    if y1 == -1:
+        y1 = image.height/2
+    if depth:
+        x2 = x1 + int(math.cos(math.radians(angle)) * depth * 10.0)
+        y2 = y1 + int(math.sin(math.radians(angle)) * depth * 10.0)
+        ctrlPoints = (x1, y1, x2, y2)
+        brushSize(depth * depth * (int(size / ((image.height - y1)) / image.height)) + 4)
+        pdb.gimp_paintbrush_default(drawable, len(ctrlPoints), ctrlPoints)
+        if not random.randrange(0, 23) == 23:
+            drawForestTree(x2, y2, angle - 20, depth - 1, size, recursiondepth + 1)
+            if random.randrange(0, 23) == 23:
+                drawForestTree(x2, y2, angle - random.randrange(-30, 30), depth - 1, size, recursiondepth + 1)
+                drawForestTree(x2, y2, angle - random.randrange(-30, 30), depth - 1, size, recursiondepth + 1)
+                drawForestTree(x2, y2, angle - random.randrange(-30, 30), depth - 1, size, recursiondepth + 1)
+            else:
+                drawForestTree(x2, y2, angle - random.randrange(15, 50), depth - 1, size, recursiondepth + 1)
+                if depth % 2 == 0:
+                    drawForestTree(x2, y2, angle + 20, depth - 1, size, recursiondepth + 1)
+                if (depth + 1) % 4 == 0:
+                    drawForestTree(x2, y2, angle + 20, depth - 1, size, recursiondepth + 1)
+                if depth == 5:
+                    drawForestTree(x2, y2, angle - 45, depth - 1, size, recursiondepth + 1)
+                    drawForestTree(x2, y2, angle + 45, depth - 1, size, recursiondepth + 1)
+
+# draw a series of trees with a y position based on depth
+def drawForest(trees, options):
+    image = gimp.image_list()[0]
+    for tree in range(0, trees):
+        y1 = 2 * (image.height / 3) + random.randrange(-1 * (image.height / 5), image.height / 5)
+        x1 = random.randrange(image.width / 20, 19 * (image.width / 20))
+        angle = random.randrange(250, 290)
+        size = (y1 / (2.0 * (image.height / 3.0) + (image.height / 5.0))) + 4
+        depth = random.randrange(3, 7)
+        drawForestTree(x1, y1, angle, depth, size)
+
+#draws polygon of N sides at a x-y location
+def drawPolygon(sides=5,size=300,x_pos=0,y_pos=0, angle_offset=0):
+    image = gimp.image_list()[0]
+    drawable = pdb.gimp_image_active_drawable(image)
+    if y_pos==0:
+        y_pos=image.height/2
+        if x_pos==0:
+            x_pos=image.width/2
+    degree_between_points=360/sides
+    points_list=[]
+    for x in range(0,sides+1):
+        point_degree=degree_between_points*x+angle_offset
+        points_list.append(int(round(math.sin(math.radians(point_degree))*size))+x_pos)
+        points_list.append(int(round(math.cos(math.radians(point_degree))*size))+y_pos)
+    fade_out=0
+    method=0
+    gradient_length=0
+    pdb.gimp_paintbrush(drawable, fade_out, len(points_list), points_list, method, gradient_length)
+
+#draw a grid of polygons of N sides
+def drawPolygonGrid(size=60,sides=3, angle_offset=0):
+    image = gimp.image_list()[0]
+    drawable = pdb.gimp_image_active_drawable(image)
+    if sides%2 == 1 or sides>4:
+        for y in range(0-image.height/10,image.height+image.height/10, size):
+            x_loop=0
+            for x in range(0-image.width/10, image.width+image.width/10, size):
+                if x_loop%2==1:
+                    drawPolygon(sides,size-size/2,x-(size/2),y,360/sides)
+                else:
+                    drawPolygon(sides,size-size/2,x,y,0)
+                x_loop=x_loop+1
+    else:
+        for x in range(0-image.height/10,image.height+image.height/10, size):
+            for y in range(0-image.width/10, image.width+image.width/10, size):
+                drawPolygon(sides,size/3,x,y,0)
+    degree_between_points=360/sides
+    points_list=[]
+    for x in range(0,sides+1):
+        point_degree=math.radians(degree_between_points*x+angle_offset)
+        points_list.append(int(round(math.sin(point_degree)*size)))
+        points_list.append(int(round(math.cos(point_degree)*size)))
+    fade_out=0
+    method=0
+    gradient_length=0
+    pdb.gimp_paintbrush(drawable, fade_out, len(points_list), points_list, method, gradient_length)
+
+def drawFrygon(sides=5,size=300,x_pos=0,y_pos=0, angle_offset=0):
+    image = gimp.image_list()[0]
+    drawable = pdb.gimp_image_active_drawable(image)
+    if y_pos==0:
+        y_pos=image.height/2
+        if x_pos==0:
+            x_pos=image.width/2
+    degree_between_points=360/sides
+    points_list=[]
+    for x in range(0,sides+1):
+        point_degree=degree_between_points*x+angle_offset
+        points_list.append(int(round(math.sin(point_degree)*size))+y_pos)
+        points_list.append(int(round(math.cos(point_degree)*size))+x_pos)
+    fade_out=0
+    method=0
+    gradient_length=0
+    pdb.gimp_paintbrush(drawable, fade_out, len(points_list), points_list, method, gradient_length)
+
+def drawFrygonGrid(size=120,sides=13):
+    global height, width
+    if sides%2 == 1:
+        for x in range(0,height,size):
+            x_deep=0
+            for y in range(0, width,size):
+                if x_deep%2==1:
+                    drawFrygon(sides,size,x,y-(size/2),0)
+                else:
+                    drawFrygon(sides,size,x,y,0)
+                x_deep=x_deep+1
+    else:
+        for x in range(0,height, size):
+            for y in range(0, width, size):
+                drawFrygon(sides,size,x,y,0)
