@@ -1,4 +1,5 @@
 import random, math
+import gimp
 
 #from gimp_be.utils.quick import qL
 from gimp_be.image.layer import editLayerMask
