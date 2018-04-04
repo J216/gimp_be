@@ -105,7 +105,7 @@ def tweetImage(message,image_file):
     CONSUMER_SECRET = settings_data['twitter']['consumer_secret']
     ACCESS_TOKEN_KEY = settings_data['twitter']['access_token_key']
     ACCESS_TOKEN_SECRET = settings_data['twitter']['access_token_secret']
-    api = TwitterAPI(CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN_KEY, ACCESS_TOKEN_SECRET)
+    api = TwitterAPI.TwitterAPI(CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN_KEY, ACCESS_TOKEN_SECRET)
     file = open(image_file, 'rb')
     data = file.read()
     r = api.request('statuses/update_with_media', {'status':message}, {'media[]':data})
