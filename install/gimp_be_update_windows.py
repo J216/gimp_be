@@ -6,6 +6,13 @@ import shutil
 from subprocess import call
 from sys import executable as e
 
+#install pip
+try:
+    import pip
+except:
+    import urllib
+    urllib.urlretrieve ("https://bootstrap.pypa.io/get-pip.py", "git-pip.py")
+    execfile('git-pip.py')
 
 gimp_be_download = "https://github.com/J216/gimp_be/archive/master.zip"
 
