@@ -1,4 +1,3 @@
-from gimpfu import gimp, pdb
 from gimp_be.utils import *
 import random, os
 from layer import *
