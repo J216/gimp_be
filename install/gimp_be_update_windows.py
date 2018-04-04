@@ -1,4 +1,3 @@
-import urllib2
 import os
 from time import sleep
 import zipfile
@@ -6,58 +5,81 @@ import shutil
 from subprocess import call
 from sys import executable as e
 
-#install pip
-try:
-    import pip
-except:
-    import urllib
-    urllib.urlretrieve ("https://bootstrap.pypa.io/get-pip.py", "git-pip.py")
-    execfile('git-pip.py')
-
-gimp_be_download = "https://github.com/J216/gimp_be/archive/master.zip"
-
-dependancies = ["runtime", "wget", "numpy", "TwitterAPI"]
+errors = []
 
 py_exec = e.replace('pythonw','python')
 py_path = e[:e.rfind("\\")+1].replace("\\","/")
+gimp_be_path = py_path+"\\Lib\\site-packages\\gimp_be"
+gimp_be_install = os.path.isdir(gimp_be_path)
 
-os.chdir(py_path)
+gimp_be_download = "https://github.com/J216/gimp_be/archive/master.zip"
+get_pip_download = "https://bootstrap.pypa.io/get-pip.py"
+
+dependancies = ["runtime", "wget", "numpy", "TwitterAPI"]
 
 pip_install = py_exec + " -m pip install "
 wget_download = py_exec + " -m wget "
 
+os.chdir(py_path)
+
+#install pip
+if not gimp_be_installed:
+    try:
+        import pip
+    except:
+        import urllib
+        urllib.urlretrieve (get_pip_download, "get-pip.py")
+        # install dependancies
+        errors.append("pip not previously installed, install: "+str(call(py_exec + " get-pip.py")))
+
 # install dependancies
-call(pip_install+" ".join(dependancies))
+errors.append("install dependancies: "+str(call(pip_install+" ".join(dependancies))))
 
 # download from github
-call(wget_download+gimp_be_download)
-# unzip gimp_be-master.zip
-if os.path.isfile("./gimp_be-master.zip"):
-    zip = zipfile.ZipFile("gimp_be-"+gimp_be_download[gimp_be_download.rfind('/')+1:])
-    zip.extractall()
-    del(zip)
+errors.append("download gimp_be: "+str(call(wget_download+gimp_be_download)
 
-# delete zip file
-os.remove("./gimp_be-master.zip")
+# unzip gimp_be-master.zip
+try:
+    if os.path.isfile("./gimp_be-master.zip"):
+        zip = zipfile.ZipFile("gimp_be-"+gimp_be_download[gimp_be_download.rfind('/')+1:])
+        zip.extractall()
+        del(zip)
+        #clean up
+        sleep(.1)
+        os.remove("./gimp_be-master.zip")
+except:
+    errors.append("download and unzip and delete zip: Error")
+
 if os.path.isdir("./gimp_be-master/gimp_be"):
     # copy settings
-    os.rename("./Lib/site-packages/gimp_be/settings/settings.ini", "./settings.ini")
-    # remove older version
-    try:
-        shutil.rmtree("./Lib/site-packages/gimp_be", ignore_errors=False, onerror=None)
-    except:
-        print("Old copy of gimp_be not found... contining anyways")
-        sleep(2)
+    if gimp_be_installed:
+        os.rename("./Lib/site-packages/gimp_be/settings/settings.ini", "./settings.ini")
+        # remove older version
+        try:
+            shutil.rmtree("./Lib/site-packages/gimp_be", ignore_errors=False, onerror=None)
+        except:
+            errors.append("Old copy of gimp_be not found or couldn't be deleted... contining anyways")
+            sleep(1)
     # copy new version
     os.rename("./gimp_be-master/gimp_be", "./Lib/site-packages/gimp_be")
-    # restore settings.json
-    os.rename("./settings.ini","./Lib/site-packages/gimp_be/settings/settings.ini")
+    if gimp_be_installed:
+        # restore settings.ini
+        os.rename("./settings.ini","./Lib/site-packages/gimp_be/settings/settings.ini")
     # update update script
     try:
         os .remove("./Scripts/gimp_be_update.py")
     except:
-        print("Old copy of gimp_be update script not found... contining anyways")
-        sleep(2)
+        errors.append("Old copy of gimp_be update script not found or couldn't be deleted... contining anyways")
     os.rename("./gimp_be-master/install/gimp_be_update_windows.py", "./Scripts/gimp_be_update.py")
-    # clean up
-    shutil.rmtree("./gimp_be-master", ignore_errors=False, onerror=None)
+    try:
+        # clean up
+        shutil.rmtree("./gimp_be-master", ignore_errors=False, onerror=None)
+    except:
+        errors.append("couldn't delete temp files")
+
+
+if len(e) == 0:
+    print("completed with no error")
+else:
+    for e in errors:
+        print(e)
