@@ -10,7 +10,7 @@ errors = []
 py_exec = e.replace('pythonw','python')
 py_path = e[:e.rfind("\\")+1].replace("\\","/")
 gimp_be_path = py_path+"\\Lib\\site-packages\\gimp_be"
-gimp_be_install = os.path.isdir(gimp_be_path)
+gimp_be_installed = os.path.isdir(gimp_be_path)
 
 gimp_be_download = "https://github.com/J216/gimp_be/archive/master.zip"
 get_pip_download = "https://bootstrap.pypa.io/get-pip.py"
@@ -36,7 +36,7 @@ if not gimp_be_installed:
 errors.append("install dependancies: "+str(call(pip_install+" ".join(dependancies))))
 
 # download from github
-errors.append("download gimp_be: "+str(call(wget_download+gimp_be_download)
+errors.append("download gimp_be: "+str(call(wget_download+gimp_be_download)))
 
 # unzip gimp_be-master.zip
 try:
@@ -58,7 +58,7 @@ if os.path.isdir("./gimp_be-master/gimp_be"):
         try:
             shutil.rmtree("./Lib/site-packages/gimp_be", ignore_errors=False, onerror=None)
         except:
-            errors.append("Old copy of gimp_be not found or couldn't be deleted... contining anyways")
+            errors.append("gimp_be module folder couldn't be deleted")
             sleep(1)
     # copy new version
     os.rename("./gimp_be-master/gimp_be", "./Lib/site-packages/gimp_be")
@@ -69,7 +69,7 @@ if os.path.isdir("./gimp_be-master/gimp_be"):
     try:
         os .remove("./Scripts/gimp_be_update.py")
     except:
-        errors.append("Old copy of gimp_be update script not found or couldn't be deleted... contining anyways")
+        errors.append("Old copy of gimp_be update script not found or couldn't be deleted")
     os.rename("./gimp_be-master/install/gimp_be_update_windows.py", "./Scripts/gimp_be_update.py")
     try:
         # clean up
