@@ -516,10 +516,10 @@ def doWeatherPainting():
 def addResource(options=0, resource_type="rock", opacity=90, resource_folder="", scale=[], position=[]):
     avoid_folders=['brushes','fonts','gradients','mask','overlays','paths','scraps','signature','stamps','stickers','stock-image','templates','tiles']
     if resource_type == "random":
-        cl=dict(Counter(os.listdir(settings_data['path']['art_folder']+'resources/'))-Counter(avoid_folders)).keys()
+        cl=dict(Counter(os.listdir(settings_data['path']['art_folder']+'/resources/'))-Counter(avoid_folders)).keys()
         resource_type = random.choice(cl)
     if resource_folder == "":
-        resource_folder = settings_data['path']['art_folder']+'resources/'+resource_type+'/'
+        resource_folder = settings_data['path']['art_folder']+'/resources/'+resource_type+'/'
     resource_file = ""
     resource_files = []
     if options == 0:
@@ -558,18 +558,18 @@ def addResource(options=0, resource_type="rock", opacity=90, resource_folder="",
 
 def qRes(options=0, sticker_type="random", opacity=90, sticker_folder="", scale=[], position=[]):
     if sticker_folder == "" and not sticker_type == 'random':
-        sticker_folder = settings_data['path']['art_folder']+'resources/'+resource_type+'/'
+        sticker_folder = settings_data['path']['art_folder']+'/resources/'+resource_type+'/'
     addResource(options, sticker_type, opacity, sticker_folder, scale, position)
 
 def addSticker(options=0, sticker_type="", opacity=90, sticker_folder="", scale=[], position=[]):
     if sticker_folder == "":
-        sticker_folder = settings_data['path']['art_folder']+'resources/stickers/'
+        sticker_folder = settings_data['path']['art_folder']+'/resources/stickers/'
     addResource(options, sticker_type, opacity, sticker_folder, scale, position)
 
 def addFractal(options=0, fractal_type="", opacity=90, fractal_folder="", scale=[], position=[]):
     image = gimp.image_list()[0]
     if fractal_folder == "":
-        fractal_folder = settings_data['path']['art_folder']+'resources/fractals/'
+        fractal_folder = settings_data['path']['art_folder']+'/resources/fractals/'
     if position == []:
         position = [0,0]
     if scale == []:
@@ -581,7 +581,7 @@ def addFractal(options=0, fractal_type="", opacity=90, fractal_folder="", scale=
 def addPhoto(options=0, photo_type="", opacity=90, photo_folder="", scale=[], position=[]):
     image = gimp.image_list()[0]
     if photo_folder == "":
-        photo_folder = settings_data['path']['art_folder']+'resources/photos/'
+        photo_folder = settings_data['path']['art_folder']+'/resources/photos/'
     if position == []:
         position = [0,0]
     if scale == []:
@@ -593,7 +593,7 @@ def addPhoto(options=0, photo_type="", opacity=90, photo_folder="", scale=[], po
 def addSpacePhoto(options=0, type="", opacity=90, space_folder="", scale=[], position=[]):
     image = gimp.image_list()[0]
     if space_folder == "":
-        space_folder = settings_data['path']['art_folder']+'resources/space/'
+        space_folder = settings_data['path']['art_folder']+'/resources/space/'
     if position == []:
         position = [0,0]
     if scale == []:
@@ -605,7 +605,7 @@ def addSpacePhoto(options=0, type="", opacity=90, space_folder="", scale=[], pos
 def addScriptDrawing(options=0, type="", opacity=90, script_folder="", scale=[], position=[]):
     image = gimp.image_list()[0]
     if script_folder == "":
-        script_folder = settings_data['path']['art_folder']+'resources/script_drawings/'
+        script_folder = settings_data['path']['art_folder']+'/resources/script_drawings/'
     if position == []:
         position = [0,0]
     if scale == []:
