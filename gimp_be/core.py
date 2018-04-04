@@ -14,13 +14,6 @@ def qS():
     # quick set up of default size image
     imageSetup()
 
-def qL():
-    # quick new layer
-    addNewLayer()
-    image = gimp.image_list()[0]
-    drawable = pdb.gimp_image_active_drawable(image)
-    pdb.gimp_edit_fill(drawable, 1)
-
 def qXJ(comment=""):
     # quick export jpg default with unique file name
     from gimp_be.network.twitter import tweetText
@@ -94,8 +87,6 @@ def qTG():
     exported=qG()
     return (tweetImage(tweet, exported[1]) == '200', tweet)
 
-
-
 def qXDT(fn,comment=""):
     global settings_data
     setEXIFTags(fn,{"Copyright":settings_data['user']['author']+" "+datetime.now().strftime('%Y'),
@@ -113,4 +104,4 @@ def qXDT(fn,comment=""):
                     "Make":"GIMP",
                     "Model":"Python",
                     "Rating":"5"})
-    
+
