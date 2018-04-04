@@ -5,6 +5,7 @@ from utils import *
 from draw import *
 from paint import *
 
+from collections import Counter
 import TwitterAPI
 from random import randrange, choice, shuffle
 from string import letters
