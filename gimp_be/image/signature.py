@@ -6,7 +6,7 @@ from layer import *
 
 def addSignature(options=0, location="", opacity=40, signature_folder=""):
     if signature_folder == "":
-        signature_folder = settings_data['path']['art_folder']+'resources/signature/'
+        signature_folder = settings_data['path']['art_folder']+'/resources/signature/'
     signature_files = []
     for file in os.listdir(signature_folder):
         if 'png' in file:
@@ -23,7 +23,7 @@ def addSignature(options=0, location="", opacity=40, signature_folder=""):
 
 def addYear(options=0, location="", opacity=40, signature_folder=""):
     if signature_folder == "":
-        signature_folder = settings_data['path']['art_folder']+'resources/signature/'
+        signature_folder = settings_data['path']['art_folder']+'/resources/signature/'
     year_files = []
     for file in os.listdir(signature_folder):
         if 'png' in file:
