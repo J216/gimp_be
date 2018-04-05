@@ -1,3 +1,6 @@
+import gimp
+from gimp import pdb
+
 from settings import *
 from network import *
 from image import *
@@ -11,8 +14,6 @@ from random import randrange, choice, shuffle
 from string import letters
 import datetime as dt
 from time import sleep
-
-
 
 def setTwitterAPIKeys(ACCESS_TOKEN_KEY="NOT_SET",CONSUMER_KEY="NOT_SET",CONSUMER_SECRET="NOT_SET",ACCESS_TOKEN_SECRET="NOT_SET"):
     global settings_data
