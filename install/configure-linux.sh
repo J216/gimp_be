@@ -1,6 +1,6 @@
 # Copy default settings file
-sudo cp ./gimp_be-master/install/linux_default_settings.json /usr/lib/gimp/2.0/python/gimp_be/settings/settings.json
-sudo chmod 777 /usr/lib/gimp/2.0/python/gimp_be/settings/settings.json
+sudo cp ./gimp_be-master/install/linux_default_settings.ini /usr/lib/gimp/2.0/python/gimp_be/settings/settings.ini
+#sudo chmod 777 /usr/lib/gimp/2.0/python/gimp_be/settings/settings.ini
 
 # Set host name
 
