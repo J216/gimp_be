@@ -6,7 +6,7 @@ import inspect
 
 path_settings=os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 
-configfile_name = path_settings+"\\"+"settings.ini"
+configfile_name = path_settings+"/settings.ini"
 config = ConfigParser()
 os.chdir(os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe()))))
 config.read(configfile_name)
