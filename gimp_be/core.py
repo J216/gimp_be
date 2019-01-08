@@ -492,7 +492,9 @@ def skeleton(type="",num=10,delay=10,tweet=1,study_name="Multifunctional Study")
         # This is the nugget #
         # ################## #
         if type == "":
-            automations[random.choice(automations.keys())]()
+            automation_pick = random.choice(automations.keys())
+            print(automation_pick)
+            automations[automation_pick]()
         else:
             automations[type]()
         if tweet:
@@ -500,6 +502,7 @@ def skeleton(type="",num=10,delay=10,tweet=1,study_name="Multifunctional Study")
             flatten()
             tweet=imageTitle(2)+'\n by Jared Haer\n'+study_name+'\n'
             tweetImage(tweet+hashtagString(len(tweet)),qX()[1])
+            print(tweet)
             closeAll()
             sleep(delay)
         else:
